@@ -24,24 +24,23 @@ const NavMenu = () => {
 
                 <NavigationMenuItem>
                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href="/snippets">Snippets </Link>
+                        <Link href="/notes">Notes </Link>
                     </NavigationMenuLink>
                 </NavigationMenuItem>
+
                 <NavigationMenuItem>
                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href="/library">Library </Link>
+                        <Link href="/references">References </Link>
                     </NavigationMenuLink>
                 </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                        <Link href="/about">About </Link>
-                    </NavigationMenuLink>
-                </NavigationMenuItem>
+
                 <NavigationMenuItem>
                     <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                         <Link href="/about">About </Link>
                     </NavigationMenuLink>
                 </NavigationMenuItem>
+
+
             </NavigationMenuList>
         </NavigationMenu>
     )

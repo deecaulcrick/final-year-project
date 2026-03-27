@@ -1,0 +1,82 @@
+---
+title: Intelligence dashboard design thinking 
+description: Reference products (August Health, Vibrant), the difference between a report and intelligence, metric-by-metric reasoning, what was excluded and why
+category: Notes
+date: March 26, 2026
+---
+
+## The reference products
+
+Two products informed the dashboard design more than any others.
+
+**August Health** [augusthealth.com](augusthealth.com) is an EHR platform for senior living facilities. Their Insights section is the most relevant reference point. What makes it interesting isn't the metrics themselves — patient counts and diagnosis frequencies are table stakes — it's the *proactive* framing. The system doesn't wait for a user to ask a question. It surfaces watchlists, rising risk flags, and anomalies automatically. A resident's health is deteriorating? The system tells you before you thought to look.
+
+That framing — the system tells you what to pay attention to before you ask — became a core design principle.
+
+**Vibrant Practice** [vibrantpractice.com](vibrantpractice.com) is a practice management platform for functional and integrative medicine clinics in the US. It positions AI as a "clinical co-pilot" — augmenting the doctor, never replacing them. That framing directly addressed the legal concern about diagnostic AI. If the system is positioned as a co-pilot that surfaces information, the doctor remains the decision-maker and the legal exposure is different from a system that claims to diagnose.
+
+## The difference between a report and intelligence
+
+A report shows you what happened. Intelligence tells you what it means and what you should do about it.
+
+Most dashboard implementations stop at reporting. Here's a count of diagnoses. Here's a list of patients. That's useful but passive — it requires the user to interpret the data and decide what matters.
+
+The proactive flagging mechanism is what moves the dashboard from reporting to intelligence. The system compares current period metrics against the clinic's own rolling historical average. When something deviates significantly — malaria cases up 34% against the 4-week baseline, 23 overdue follow-ups versus a usual 8 — it surfaces a flag without being asked.
+
+The flags are categorised:
+- **Clinical spike** — a diagnosis frequency is significantly above historical baseline (action: check stock, consider public health context)
+- **Operational gap** — overdue follow-ups accumulating (action: Tunde calls the list on Monday)
+- **Chronic disease gap** — patients with chronic conditions not seen in 60+ days (action: recall)
+- **Safety confirmation** — no drug interaction flags this period (confirms the checking is running)
+
+The last category is deliberately included. Absence of a problem is also information. Doctors in high-pressure environments benefit from explicit confirmation that the safety checks ran and nothing was flagged.
+
+## The natural language query interface
+
+The decision to add a conversational chat interface to the dashboard came from a specific observation: even if the dashboard surfaces the right metrics, a doctor or clinic administrator still needs to ask follow-up questions that the pre-built charts don't answer.
+
+*How many of my hypertension patients haven't been seen in over 60 days?*
+*Which diagnosis has the worst follow-up compliance rate?*
+*How many children under 12 presented with fever last month?*
+
+These aren't questions you can anticipate and build dedicated charts for. They're ad hoc analytical queries. The natural language interface lets users ask them in plain language without knowing SQL or needing a BI tool.
+
+The implementation is deliberately simple: the Claude API receives the question plus a JSON summary of the clinic's aggregated metrics and returns a plain-language answer. Individual patient records are not passed to the dashboard chat — only pre-aggregated statistics — providing an additional data minimisation layer.
+
+Patient-level questions are handled from within the individual patient's profile view, where the context is already appropriately scoped to that patient's record.
+
+## Metrics tracked and why each one matters
+
+### Overview row
+- **Patients this week** — operational load indicator; trending tells you if the practice is growing
+- **Total registered patients** — the size of the practice's patient population
+- **Overdue follow-ups** — the most actionable metric on the dashboard; directly drives Tunde's call list
+- **Average consultation time** — efficiency indicator; a sudden drop might mean consultations are being rushed
+
+### Diagnoses chart
+The chart itself is standard. The trend annotation — *Malaria ↑34%* — is the intelligence layer. It's calculated against the clinic's own 4-week rolling average, not an external benchmark. The clinic's own baseline is the right reference because it accounts for the practice's patient mix, location, and seasonal patterns.
+
+### Proactive flags panel
+Four categories: clinical spike, operational gap, chronic disease gap, safety confirmation. Actionable language — not "malaria is elevated" but "consider stocking more ACTs."
+
+### Drugs chart
+Directly feeds procurement decisions. If Artemether-Lumefantrine is dispensed 38 times in one week, the ordering conversation is straightforward.
+
+### Demographics breakdown
+Age and sex distribution. Over time this tells the doctor who their practice actually serves versus who they think it serves. A practice that thinks it's a general clinic but is seeing 40% under-12s is actually running a paediatric-heavy practice and should stock accordingly.
+
+### Doctor schedule
+Booked vs completed vs walk-ins vs no-shows. The no-show rate in particular is a signal worth tracking — it often reflects patient satisfaction, appointment booking friction, or socioeconomic barriers to attendance.
+
+### Follow-up watchlist
+The most operationally useful section for daily workflow. Colour-coded by severity of overdue — red for critically overdue, amber for approaching. The receptionist works from this list. The doctor reviews it for any clinical concern cases.
+
+## What wasn't included and why
+
+**Billing and revenue metrics** were deliberately excluded from the MVP. They're valuable but they introduce complexity — fee structures vary by clinic, insurance interactions are complicated, and getting billing wrong has direct financial consequences. This is future work.
+
+**Patient satisfaction scores** require a patient-facing interface component. Also future work.
+
+**Lab results integration** would require partnerships with diagnostic labs or a manual entry workflow. The system currently allows investigation orders to be noted in the consultation and results to be entered manually when received. Automated integration is out of scope.
+
+**Inventory management** for drug stock — tracking actual stock levels against prescription volumes — was considered and excluded. The dashboard tells the doctor what's being prescribed at high volume; actual stock management remains manual. The gap between "we're prescribing a lot of Artemether" and "we have 200 packs left" is one the clinic manages themselves. Closing that gap is future work.

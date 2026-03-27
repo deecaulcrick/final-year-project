@@ -1,0 +1,69 @@
+---
+title: The Nigerian Context 
+description: The paper folder problem, disease epidemiology mismatch, infrastructure constraints, the affordability argument, scale implications
+category: Notes
+date: March 26, 2026
+---
+
+
+## Why this matters here specifically
+
+The EMR/EHR problem is not unique to Nigeria. Electronic health records have been a challenge everywhere. But the specific conditions of Nigerian primary care create a version of this problem that existing solutions don't adequately address.
+
+Most enterprise EMR systems — the ones that work well — were designed for Western hospital environments with:
+- Dedicated IT staff to install and maintain them
+- Stable electricity and reliable internet
+- Standardised clinical terminology (ICD codes, SNOMED)
+- Structured documentation practices
+- Patients who interact with the system through insurance and billing flows
+
+A boutique private clinic in Lekki or Yaba has none of these by default. The doctor is usually also the administrator. IT support doesn't exist. Power cuts happen. The documentation language mixes English, medical shorthand, and sometimes Pidgin. And patients pay cash at the point of service.
+
+This project is designed for that environment, not retrofitted to it.
+
+## The paper folder problem
+
+The typical patient record management system at a small Nigerian private clinic is a physical folder in a filing cabinet, organised roughly by surname or sometimes by visit date. When a patient comes in, someone finds the folder. When a patient doesn't come in, the folder sits there with no follow-up triggered.
+
+The consequences of this are real and underappreciated:
+
+- A doctor prescribing for a returning patient has no reliable access to what was prescribed before unless the patient remembers or the folder is found
+- Chronic disease patients — hypertensives, diabetics — have no systematic tracking of whether their condition is improving or deteriorating over time
+- A locum doctor covering for a week has no handover information beyond what the regular doctor verbally communicates
+- Nobody knows what the most common diagnoses are, because nobody has ever aggregated the data
+- Follow-ups are verbal requests to the patient — there is no system that tracks whether they came back
+
+## The disease epidemiology issue
+
+Most AI systems trained on clinical data are trained on Western clinical data. This creates a real problem for decision support in Nigeria.
+
+Plasmodium falciparum malaria, typhoid fever, sickle cell crises, HIV-associated opportunistic infections, and their various complications are a substantially larger proportion of primary care presentations in Nigeria than they are in, say, the UK or the US. A clinical AI system that doesn't account for this will produce suggestions that are technically plausible but locally inappropriate — suggesting viral encephalitis when malaria is the far more likely explanation for a febrile patient in Lagos.
+
+The system addresses this through explicit prompting: the Claude API is given a system prompt that encodes West African disease prevalence and instructs it to weight differential suggestions accordingly. This is a partial solution — a fully locally-trained model would be better — but it's the best available approach given the absence of a Nigerian clinical training corpus.
+
+## The infrastructure constraint
+
+Nigerian internet connectivity is real but uneven. Power cuts happen. A system that requires continuous high-bandwidth connectivity to function at all is a system that will fail at the worst moments.
+
+The design response:
+- Core documentation workflows (patient registration, consultation notes, prescription recording) should function without the AI features if API calls fail
+- The system gracefully degrades — AI suggestions don't appear, but the doctor can still complete the consultation
+- Asynchronous processing where possible, so the UI doesn't block waiting for an API response
+
+A future improvement — a Progressive Web App that caches the day's patient list and allows offline consultation entry that syncs when connectivity returns — is scoped as future work.
+
+## What this looks like at scale
+
+A single clinic using this system gets better records management and clinical intelligence than it's ever had. But the more interesting picture is aggregate.
+
+If 200 clinics across Lagos are using the platform, the anonymised aggregate data becomes something that doesn't currently exist: a real-time epidemiological map of Nigerian primary care. What diseases are presenting where. What drugs are being prescribed. What's spiking in which areas.
+
+The NCDC's disease surveillance relies on hospital reporting that is slow, incomplete, and skewed toward severe cases. Primary care — the first point of contact for most patients — is essentially invisible to the national surveillance system. A platform like this, at scale, could surface a disease cluster weeks before it shows up in hospital admission data.
+
+That's the long-term public health value. It doesn't need to be built now. It becomes available as a natural consequence of enough clinics using the platform consistently.
+
+## The affordability constraint
+
+Enterprise EMR systems are not just technically inappropriate for small Nigerian clinics. They're prohibitively expensive. Pricing is typically per-seat or per-facility, often in dollars, with implementation and support costs on top.
+
+The SaaS model directly addresses this. A monthly subscription priced in naira, no installation, no hardware, no IT support needed. The clinic signs up and is operational the same day. This accessibility is not an afterthought — it's the primary reason the architecture is cloud-hosted and browser-based rather than installed software.

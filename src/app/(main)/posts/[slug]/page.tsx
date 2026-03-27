@@ -9,7 +9,7 @@ import Link from 'next/link'
 
 
 const getPostContent = (slug: string) => {
-    const folder = path.join(process.cwd(), "src/content/blog/");
+    const folder = path.join(process.cwd(), "src/content/chapters/");
     const file = path.join(folder, `${slug}.mdx`);
     const content = fs.readFileSync(file, "utf-8");
     const matterResult = matter(content);

@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import {Instrument_Serif} from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  variable: "--font-instrument-serif",
+  weight: "400",
+});
 
 const generalSans = localFont({
   src: [
@@ -50,7 +57,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${generalSans.variable} ${zodiak.variable} ${tabular.variable} antialiased `} >
+      <body className={`${generalSans.variable} ${zodiak.variable} ${tabular.variable} ${instrumentSerif.variable} antialiased `} >
         <ThemeProvider attribute="class" defaultTheme="system">
 
           {children}

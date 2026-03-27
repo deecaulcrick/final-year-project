@@ -1,0 +1,37 @@
+---
+title: "Chapter 3: Methodology"
+subheading: "System Design, Architecture, and the Decisions Behind an AI-Assisted EMR for Nigerian Primary Care"
+excerpt: From a paper folder in Lekki to a cloud-native, multi-tenant platform — how every technical decision was made with one doctor, one clinic, and one very real problem in mind
+date: March 27, 2026
+category: research
+tag: Research
+coverImage: ""
+---
+
+## 3.1 Introduction
+
+This chapter presents the research methodology and system design approach adopted in the development of the AI-Assisted EMR/EHR SaaS Platform for Nigerian Primary Care — a cloud-based, multi-tenant EMR/EHR system with embedded AI clinical intelligence designed for Nigerian boutique and primary care clinics. The chapter starts by stating the research design and outlining methods used to gather and validate system requirements. It then presents the selected software development methodology, followed by a detailed description of the system architecture, database design, AI integration strategy, and the technology stack selected to implement the proposed solution. This chapter ends with a discussion of the system's security and data protection design, and the testing approach adopted to validate system behaviour.
+
+---
+
+## 3.2 Research Design
+
+This project follows a design science research (DSR) approach, which is generally recognised as a suitable framework for applied computing research concerned with the creation of novel artefacts — systems, models, methods, or constructs — aimed at solving real-world problems (Hevner et al., 2004). Design science research is unique compared to purely empirical research in that it is not only concerned with the creation of a useful artefact but also the critical examination of that artefact in relation to the problem it is designed to address. In the context of this project, the artefact is the proposed platform itself, and the problem is the documented gap in accessible, intelligent clinical record management infrastructure for Nigerian primary care clinics.
+
+The study was conducted across four iterative phases: problem identification and requirements gathering, system design, iterative development and testing, and evaluation against defined requirements. Consistent with the iterative nature of design science research, these phases are not strictly sequential — several cycles of refinement occurred as early implementation decisions revealed additional requirements or constraints not captured in the initial analysis.
+
+---
+
+## 3.3 Requirements Gathering
+
+### 3.3.1 Literature and Contextual Review
+
+The initial requirements gathering phase involved a systematic review of the academic and industry literature on EMR systems, clinical decision support, healthcare SaaS platforms, and AI applications in healthcare — the results of which are presented in Chapter Two. This review was supplemented by an analysis of existing EMR and clinical intelligence platforms operating in comparable contexts, including Vibrant Practice and August Health, in order to identify both best practices and functional gaps that the proposed system could address. The analysis of these platforms informed the system's feature prioritisation, particularly the design of the intelligence dashboard and proactive flagging mechanism.
+
+### 3.3.2 User Requirements Analysis
+
+Primary requirements were derived through structured observation and informal interviews with a practising general practitioner operating a boutique primary care clinic in Lagos, Nigeria. This clinic — serving as the primary test case for the system design — operates a predominantly paper-based record system and was used to develop realistic, grounded user stories that drove the system's functional specification. Key stakeholder personas identified through this process included the clinic administrator/doctor, the nurse responsible for vitals recording, and the receptionist responsible for patient registration and appointment management.
+
+The requirements elicitation process yielded a set of functional and non-functional requirements that formed the basis of the system specification. Functional requirements were organised into five categories corresponding to the system's principal modules: patient management, consultation and clinical documentation, intelligence and analytics, AI-assisted decision support, and clinic administration. Non-functional requirements addressed system performance, data security and privacy compliance, multi-tenant data isolation, browser-based accessibility, and graceful degradation under poor network conditions.
+
+<Callout type="disclaimer" heading="Disclaimer" text="This chapter is still a work in progress in progress..."/>

@@ -8,22 +8,23 @@ import BlogImage from './components/ui/BlogImage'
 import BookRef from './components/ui/BookRef'
 import SideNote from './components/ui/SideNote'
 import PostRef from './components/ui/PostRef'
+import Link from 'next/link'
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     // Custom headings with consistent styling
     h1: ({ children, ...props }) => (
-      <h1 {...props} className="text-5xl font-bold mb-6 mt-8 text-foreground border-b pb-2">
+      <h1 {...props} className="text-6xl font-bold mb-6 mt-8 text-foreground border-b pb-2">
         {children}
       </h1>
     ),
     h2: ({ children, ...props }) => (
-      <h2 {...props} className=" font-heading relative px-4 text-4xl text-theme-dark-green tracking-tight dark:text-theme-blue font-normal mb-4 mt-8 before:content-['#'] before:font-normal before:absolute before:-left-4 before:hidden hover:before:block before:transition-all">
+      <h2 {...props} className=" font-heading relative px-4 text-5xl text-theme-dark-green tracking-tight dark:text-theme-blue font-normal mb-4 mt-8 before:content-['#'] before:font-normal before:absolute before:-left-4 before:hidden hover:before:block before:transition-all">
         {children}
       </h2>
     ),
     h3: ({ children, ...props }) => (
-      <h3 {...props} className="font-heading text-2xl px-4 font-normal mb-3 mt-6 text-foreground">
+      <h3 {...props} className="font-heading text-3xl px-4 font-normal mb-3 mt-6  text-theme-orange dark:text-theme-pink">
         {children}
       </h3>
     ),
@@ -64,7 +65,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     // Custom list styling
     ul: ({ children }) => (
-      <ul className="list-disc list-inside mb-4 space-y-2 ml-4">
+      <ul className="list-disc mb-4 space-y-2 ml-4">
         {children}
       </ul>
     ),
@@ -85,12 +86,22 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     a: ({ href, children }) => (
       <a
         href={href}
-        className="text-orange hover:text-pink underline transition-colors"
+        className="text-theme-orange dark:text-theme-pink hover:text-theme-pink dark:hover:text-theme-blue underline transition-colors"
         target={href?.startsWith('http') ? '_blank' : undefined}
         rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
       >
         {children}
       </a>
+    ),
+    Link: ({ href, children }) => (
+      <Link
+        href={href}
+        className="text-orange hover:text-pink underline transition-colors"
+        target={href?.startsWith('http') ? '_blank' : undefined}
+        rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
+      >
+        {children}
+      </Link>
     ),
 
     // Custom image with Next.js Image component

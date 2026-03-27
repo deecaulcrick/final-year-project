@@ -1,0 +1,92 @@
+---
+title: Real world walkthrough — Remy Clinic
+description: How the project started, the ASR pivot, the diagnostics reframe, how the intelligence dashboard became the differentiator
+category: Notes
+date: March 26, 2026
+--- 
+
+
+
+*A concrete test case used throughout the design process to ground abstract decisions in realistic scenarios.*
+
+## The clinic
+
+Dr. Funmi Adeyemi runs a small private general practice in Lekki Phase 1, Lagos. Three staff: herself, a nurse (Blessing), and a receptionist (Tunde). 25–40 patients per day. Everything currently runs on paper registers, a WhatsApp group for internal communication, and an Excel sheet that Tunde maintains inconsistently. Drug stock is tracked in a notebook.
+
+This is not an unusual clinic. This is most boutique practices in Lagos.
+
+## What a normal day looks like now (before the system)
+
+Tunde registers walk-ins by writing names in a ledger. Regular patients have folders in a filing cabinet — findable if Tunde can locate them. A patient who attended six weeks ago may or may not have an accessible record depending on whether the folder was filed correctly.
+
+Dr. Funmi sees each patient, writes notes on paper, prescribes from memory, and dictates any follow-up verbally: "come back in three days." Whether the patient comes back is tracked by no one.
+
+At the end of the week, nobody knows what the most common diagnoses were. Nobody knows which patients are overdue. Nobody knows if malaria presentations are up this month. That information exists, dispersed across handwritten folders — but it's computationally inaccessible.
+
+## What changes on day one with the system
+
+Tunde registers the clinic in under 30 minutes. He invites Dr. Funmi (Admin/Doctor role) and Blessing (Nurse role). Each gets a tailored interface — Tunde sees patient registration and appointments, Blessing sees vitals, Dr. Funmi sees everything.
+
+No IT person needed. No installation. No hardware.
+
+## A routine consultation
+
+**7:45am.** Mrs. Chioma Okafor arrives. She was last here six weeks ago with typhoid. Tunde searches her name, checks her in. Dr. Funmi sees her name appear on her queue.
+
+**8:10am.** Blessing takes vitals — BP, temperature, weight, pulse. They attach to today's consultation automatically.
+
+**8:15am.** Dr. Funmi opens the consultation. She sees today's vitals, Mrs. Okafor's full visit history, and that her last typhoid treatment was six weeks ago — without opening a folder or asking anyone.
+
+Mrs. Okafor has a headache, fatigue, and mild fever for two days. Dr. Funmi types the symptoms. The system queries the clinic's own consultation history and surfaces: *in the last 6 months, similar presentations at this clinic were most commonly diagnosed with: Malaria (31 cases), Typhoid Fever (12 cases), Viral fever (6 cases).*
+
+Dr. Funmi suspected malaria. The system confirms she's operating consistently with her own past clinical pattern. She orders an RDT. Positive. She selects Malaria as the diagnosis, adds notes, prescribes Artemether-Lumefantrine + Paracetamol. The drug interaction check runs silently — clean. She sets a follow-up for three days.
+
+**What's different:** Dr. Funmi currently does all of this from memory, without Mrs. Okafor's previous visit record unless the folder is found. The prescription is handwritten. There is no follow-up tracking.
+
+## The follow-up problem solved
+
+Three days later, Mrs. Okafor hasn't come back. Her name appears on Tunde's overdue follow-up list — which the system generates automatically. He calls her. She's feeling better and didn't think she needed to come. He marks the follow-up resolved. The flag clears.
+
+If she were unreachable, the flag would stay open. Dr. Funmi could see accumulated unresolved follow-ups and make a clinical judgment about which ones warranted more active effort.
+
+**What's different:** Follow-ups are currently verbal. If the patient doesn't come back, nobody knows.
+
+## The locum scenario
+
+Dr. Funmi is travelling for a week. Dr. Chidi, a locum, covers.
+
+Tunde creates a temporary Doctor account for Dr. Chidi. He immediately has access to every patient's complete history. He sees that Mr. Babatunde Adeola is hypertensive and diabetic, what he's currently on, that his BP has been trending upward for three months, and that his last HbA1c was above target. He treats him as an informed clinician, not a stranger seeing the patient for the first time.
+
+When Dr. Funmi returns, she reviews every consultation Dr. Chidi handled from her dashboard.
+
+**What's different:** Locum handovers currently involve verbal briefings or handing over folders. Critical patient context is routinely lost.
+
+## The Friday afternoon intelligence review
+
+Dr. Funmi opens the intelligence dashboard. She sees 187 patients this week, up 14% from last week. The proactive flags panel surfaces: malaria cases are up 34% against the 4-week baseline — rainy season is starting early. She makes a note to order more ACTs.
+
+She also sees 23 overdue follow-ups and a flag that 14 hypertension patients haven't been seen in over 60 days. She asks Tunde to start calling them Monday morning.
+
+She types into the chat: *"how many of my hypertension patients haven't had a follow-up in over 60 days?"*
+
+The system responds with the count and offers to list them. She lists them. She has names to give Tunde.
+
+**What's different:** None of this information exists in the current paper system. Dr. Funmi has no idea how many hypertension patients she has, let alone which ones are overdue.
+
+## The edge cases
+
+**No internet.** The system is browser-based — it requires connectivity. The fallback is paper for that session, with Tunde entering the consultations retroactively when connectivity returns. The system accepts backdated entries. No data is permanently lost.
+
+**Wrong drug combination.** A patient is on Warfarin. Dr. Funmi prescribes Metronidazole. The system flags: *potential interaction — Metronidazole may significantly increase Warfarin's anticoagulant effect.* Dr. Funmi reviews, decides to proceed with a shorter course, and documents the interaction in the notes. Her awareness is on record.
+
+**Patient doesn't know their blood group.** Registration accepts unknown values. When a blood test is eventually done, Blessing updates the record directly.
+
+**Patient attends with no prior record.** Registered as new in two minutes. Every subsequent visit is automatically linked to this record.
+
+## Why this matters beyond the clinic
+
+Every consultation at Remy Clinic produces structured data — diagnosis, drugs prescribed, patient demographics, date. Aggregated anonymously across enough clinics, that data is something Nigeria currently lacks: a real-time primary care epidemiology dataset.
+
+The NCDC's disease surveillance system relies on hospital reporting — slow, incomplete, skewed toward severe cases. Primary care presentations, which precede hospitalisation, are invisible to the national system. A platform like this, at scale, could surface a disease cluster weeks before it shows up in hospital admissions.
+
+That's not something to build now. It becomes available as a natural consequence of enough clinics using the platform consistently over time.

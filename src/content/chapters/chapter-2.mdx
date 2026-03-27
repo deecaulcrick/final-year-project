@@ -1,0 +1,230 @@
+---
+title: "Chapter 2: Literature Review"
+subheading: "A Literature Review of AI, Language Models, and the Future of Nigerian Primary Care"
+excerpt: From symbolic AI to large language models — how decades of research converge on a single clinic in Lagos.
+date: March 27, 2026
+category: research
+tag: Research
+coverImage: ""
+---
+
+
+## 2.1 Introduction
+
+The increased adoption of artificial intelligence across multiple industries has brought about massive changes in how we gather, process, analyse, and use information. Healthcare is one of the fields that has been greatly impacted by these technological changes, due to the volume and intricacies of medical data that is being churned out every day. In clinical practice, patient records, consultation notes, prescriptions, diagnostic results, and discharge summaries make up a substantial body of information that, in the absence of adequate technological infrastructure, remains largely inaccessible for analysis and operational improvement.
+
+This is especially prevalent in resource limited healthcare systems like those that are common in Nigeria where clinical documentation is often paper based, not consistently structured and stored in a manner that prevents cross-system interoperability or even data-driven decision making. In most Nigerian communities, small and medium-sized clinics are the primary drivers of primary care, and thus, they are not always financially able to acquire enterprise-grade Electronic Medical Record (EMR) systems, and even when they can, they are not always configured to fit the local clinical processes or disease epidemiology.
+
+The proposed system in this paper fills this gap by designing a cloud based, multi-tenant EMR and Electronic Health Record (EHR) SaaS system, targeted specifically at Nigerian clinics in the form of boutique and primary care clinics. The system combines a number of AI-driven functionalities such as AI-based support of clinical documentation, intelligent recommendations of diagnosis based on the own clinical history of the clinic, instantaneous intelligence dashboards with active detection of anomalies, and natural language interface to query clinical data at the clinic level. Together, these capabilities are aimed at minimizing the administrative load on healthcare personnel, enhancing the quality and continuity of capturing patient data, and empowering some sort of data-driven clinical governance that previously has not existed in small Nigerian practices.
+
+This chapter provides a systematic review of literature that has supported such developments. It starts off with a general description of artificial intelligence as a field — what it is, how it evolved and what its various branches are, followed by a narrowing down to the architectures and techniques which are most directly applicable to the proposed system. The review covers generative artificial intelligence and large language models, Natural Language Processing and its role in the clinical setting, the review of the literature on clinical decision support systems, the discussion of the intelligence dashboards and clinical analytics, and the conclusion of the review that summarizes the multi-tenant Software-as-a-Service architecture and its applicability to the context of the Nigerian healthcare.
+
+---
+
+## 2.2 Artificial Intelligence: Definition and Historical Development
+
+Artificial intelligence is largely regarded as the ability of computing systems to execute activities that would otherwise demand the human cognitive capacity such as the ability to reason, learn, perceive, solve problems and make decisions ([Russell and Norvig, 2021](#russell-norvig-2021)). Even though the term itself was officially coined in 1956, during the Dartmouth Conference, by John McCarthy, the intellectual history of the field, building on earlier work in mathematical logic, cybernetics, and the theory of computation, dates far back, with the most iconic event in the history of the field being the formulation of the question of machine intelligence in 1950 ([Turing, 1950](#turing-1950)) and the invention of what later came to be called the Turing Test ([Turing, 1950](#turing-1950)).
+
+The history of artificial intelligence can be broadly described as alternating phases of optimism and disillusionment, the latter sometimes known as AI winters usually interspersed by the true paradigm-shifting breakthroughs. The initial years of AI development were dominated by the symbolic methodology, where human knowledge is coded into rule systems and logical inference engines by hand. The reasoning patterns of experts in the field were formalized in expert systems, which emerged as one of the most commercially important products of this period and found a fair deal of application in medical diagnosis, financial analysis, and industrial fault detection.
+
+These shortcomings of symbolic AI, including its brittle nature under ambiguous or incomplete information, and large amounts of human labour to sustain bodies of knowledge, led to other paradigms being considered. The renewed interest in artificial neural networks of the 1980s, driven in part by the invention of the backpropagation algorithm, led to a radically new philosophy: it no longer required a knowledge coded in explicit form, but instead directly acquired statistical regularities by working with data. This data-driven model formed the theoretical foundation of the machine learning revolution that would occur later and eventually give rise to deep learning systems and large language models which are the technical backbone of the planned project.
+
+---
+
+## 2.3 Branches of Artificial Intelligence
+
+The field of artificial intelligence has a variety of different subfields with each one being characterised by its methodology, theories and the type of problems it is best suited to solve. In this section, the principal branches most relevant to current AI research and to the proposed system are addressed.
+
+### 2.3.1 Machine Learning and Deep Learning
+
+Machine learning is the branch of artificial intelligence that deals with the creation of algorithms to make the system learn through data and enhance its performance on a particular task without being explicitly programmed ([Mitchell, 1997](#mitchell-1997)). Instead of using rules that are handcrafted, machine learning systems recognize statistical patterns in training data and extrapolate the patterns to give predictions or decisions on new previously unknown inputs.
+
+The discipline has three conventional paradigms of learning. The most popular is supervised learning where a model is trained using labelled input-output pairs to learn a mapping function which would include classification, regression and sequence labelling. Unsupervised learning where no labels are provided deals with determining latent structure in data by performing clustering, dimensionality reduction and generative modelling. Reinforcement learning is an agent learning to act on an environment so as to maximise a cumulative reward signal, and has delivered significant successes to game-playing, robotic control, and, more recently, alignments of large language models to human desires.
+
+Deep learning is a subfield of machine learning which uses multiple-layered nonlinear transformations represented as artificial neural networks to learn hierarchical representations of data. Their richness allows them to produce models of very complex functions, and to derive successively more abstract features of raw input. Deep learning structures have attained the state of the art in a wide range of tasks such as computer vision, natural language processing and speech recognition, and form the technical core of all large-scale AI systems deployed in practice today ([LeCun et al., 2015](#lecun-2015)).
+
+### 2.3.2 Expert Systems
+
+One of the first and most commercially important uses of artificial intelligence is expert systems, and they are still conceptually applicable to the clinical decision support literature. An expert system is a knowledge-based application that represents the reasoning of an expert in a human domain by arranging specialized knowledge in a structured rule base and uses a logical inference engine to provide conclusions based on the knowledge in response to user queries ([Hayes-Roth et al., 1983](#hayes-roth-1983)).
+
+The rule-based medical expert system that best exemplified early medical expert system development was MYCIN, developed in the 1970s at Stanford University, which showed that a rule-based medical expert system could give out antibiotic treatment recommendations to a bacterial infection just as well as clinical experts. Although initially promising, classical expert systems had the knowledge acquisition bottleneck — the difficulty of eliciting and formalising expert knowledge on a large scale — and the inability to cope with uncertainty effectively and poor generalisation behaviour when queries were outside the set rule base. Such constraints have caused classical expert systems to be replaced by statistical and neural methods in most practice applications of artificial intelligence, but their conceptual impact on clinical decision support systems design is still visible in hybrid systems today.
+
+### 2.3.3 Robotics
+
+Robotics is the branch of artificial intelligence and engineering focused on designing, building, and controlling machines to complete physical tasks at a certain level of autonomy. AI-based robotics is based on computer vision, motion planning, sensor fusion, and reinforcement learning to facilitate systems to perceive and utilise the dynamic physical environment. Robotic systems have been used in healthcare settings in the form of surgical assistance, rehabilitation assistance, pharmaceutical dispensing and hospital logistics management. Despite the fact that robotics is not directly utilised in the presented system, it is admitted here as a hefty branch of the discipline to give a full picture of the disciplinary scope of artificial intelligence.
+
+### 2.3.4 Generative Artificial Intelligence
+
+Generative artificial intelligence refers to a group of computational models with the capacity to produce new data — including text, images, audio, and video — that have the elements of the datasets on which the model was trained ([Goodfellow et al., 2014](#goodfellow-2014)). Generative models, unlike discriminative models which learn boundaries between already predefined categories, learn to approximate the underlying dataset itself, giving them the ability to come up with plausible new examples that were not initially present in the training set.
+
+The main architectures in generative AI can be split into several families. Variational Autoencoders (VAEs), introduced by [Kingma and Welling (2013)](#kingma-2013), learn compressed representations of input data and decode these to generate new outputs. Generative Adversarial Networks (GANs), introduced by [Goodfellow et al. (2014)](#goodfellow-2014), use an adversarial training dynamic between a generator and a discriminator network, producing little by little more realistic outputs that have achieved state-of-the-art results in image synthesis and medical imaging augmentation. Diffusion models, which are a more recent development, generate outputs by learning to reverse a gradual noising process and are currently the state of the art in photorealistic image generation. For the domain more relevant to the proposed system — text generation and natural language understanding — transformer-based large language models are the more dominant architecture and are discussed in detail in the coming sections.
+
+---
+
+## 2.4 Transformer Architecture and Large Language Models
+
+### 2.4.1 The Transformer Architecture
+
+The landmark paper *Attention Is All You Need* by [Vaswani et al. (2017)](#vaswani-2017) introduced transformer architecture which has fundamentally transformed the field of natural language processing. Transformer architecture has since become the dominant architectural paradigm across almost all manner of deep learning. Before the transformer, sequential language modelling tasks were addressed mainly using Recurrent Neural Networks and their gated variants (most notably Long Short-Term Memory networks) which processed tokens sequentially and struggled to model long-range dependencies or to be parallelised efficiently during training.
+
+The core innovation of the transformer is the self-attention mechanism, which gives the model the ability to directly compute relationships between any two positions in an input sequence regardless of their distance from one another. For each token in the sequence, self-attention produces a weighted sum of all other token representations, with the weights dynamically determined by the degree of relevance between pairs of tokens. This mechanism effectively allows the model to attend to contextually important parts of the input simultaneously, producing both superior modelling of long-range dependencies and substantially greater amenability to parallel computation at scale.
+
+The standard transformer consists of an encoder stack which builds contextualised representations of the input, and a decoder stack which generates output sequences conditioned on those representations. Most current large language models employ only the decoder component in an autoregressive configuration, generating text one token at a time by predicting each successive token based on all preceding context.
+
+### 2.4.2 Large Language Models
+
+Large language models (LLMs) are transformer-based models trained on data of impressive scale. These datasets typically comprise hundreds of billions of tokens drawn from web pages, books, academic publications, and code repositories, which result in systems with billions of learnable parameters that have remarkable generalisation across a wide range of language tasks ([Brown et al., 2020](#brown-2020)). The scale of both the training data and capacity of the model has been shown to give rise to new capabilities not reliably predictable from smaller models on the same tasks, including multi-step reasoning, analogical inference, in-context learning from few examples, and the ability to follow complex natural language instructions.
+
+Popular large language models include Meta's LLaMA family of open-weight models, Google's Gemini, Anthropic's Claude, and the GPT series developed by OpenAI, the latter of which is employed as the generative backbone of the AI-assisted features in the proposed system. These models are not trained for a specific task but instead develop broad linguistic and reasoning capabilities that can be directed toward specific applications through natural language instruction, an activity now referred to as prompting.
+
+The emergence of instruction-tuned and reinforcement-learning-from-human-feedback (RLHF)-aligned variants has further improved the usability of these models in interactive and safety-critical applications, producing systems that are more consistently helpful, more reliably accurate, and less prone to generating harmful or factually incorrect outputs than their base counterparts ([Ouyang et al., 2022](#ouyang-2022)). These characteristics are of particular relevance in the clinical deployment context of the proposed system, where the consequences of erroneous outputs are potentially significant.
+
+---
+
+## 2.5 Natural Language Processing in Clinical Contexts
+
+### 2.5.1 Overview of NLP
+
+Natural Language Processing refers to a sub-branch of artificial intelligence that focuses on the syntactically and semantically meaningful ability of machines to read, comprehend and synthesize human language ([Jurafsky and Martin, 2020](#jurafsky-2020)). Its uses include simple tasks like tokenisation and part-of-speech tagging all the way to more complicated tasks such as machine translation, abstractive summarisation, sentiment analysis, information extraction and open-ended conversational dialogue.
+
+It has been a paradigm shift in the field in the last decade, where rule-based and statistical methods have mostly been replaced by transformer-based language models, which can be trained to learn rich linguistic representations using large corpora and can be fine-tuned to specific tasks using relatively small amounts of labelled data. In the framework of this project, NLP offers the backbone functionality to hear and process natural language symptom reports as submitted by clinicians, decode clinical requests that are made to the intelligence dashboard, and produce structured and AI-assisted recommendations on free-text consultation-based input.
+
+### 2.5.2 Clinical NLP and Its Challenges
+
+Clinical NLP is a term applied specifically to medical and biomedical text to which natural language processing techniques are applied. Texts in clinical settings pose a unique set of challenges despite the shared underlying computational methods with general NLP, and the direct implementation of general-purpose models in this context is problematic.
+
+Clinical documentation is typified by extensive use of abbreviations, terminology, and ad hoc conventions that greatly differ between institutions, between specialties and among individual practitioners. Some of these terms — like SOB (shortness of breath) or Dx (diagnosis) — have very specific meanings in clinical applications that would not exist in a normal language context. Even more so, the clinical notes made within consultation contain spelling mistakes, incomplete sentences and inconsistent grammar most of the time. Even medical terminology, which relies to a large extent on Latin and Greek roots, creates a set of vocabulary that differs significantly from the colloquial one, and the stakes of not understanding it in this sphere are significantly more significant than in the majority of other NLP uses ([Wang et al., 2018](#wang-2018)).
+
+These difficulties have encouraged the creation of domain-adaptable models that have been trained on annotated clinical data. Among the most notable members in this category is BioBERT, proposed by [Lee et al. (2020)](#lee-2020), a model using the BERT architecture trained on large datasets of biomedical text such as PubMed abstracts and PubMed Central full articles, which shows much better performance on a variety of clinical NLP tasks than its more general predecessors. ClinicalBERT builds upon this method using pre-training on de-identified clinical records on the MIMIC-III database to give special sensitivity to the informal, idiosyncratic, and bedside style of writing. The clinical entity awareness that these models exhibit — conditions, medications, dosages, and clinical events — is, in the framework of the proposed system, implicitly offered by the massive language model that the proposed AI-assisted functions are based on, without a specific extraction pipeline.
+
+---
+
+## 2.6 AI-Assisted Clinical Decision Support
+
+### 2.6.1 Clinical Decision Support Systems
+
+Clinical Decision Support Systems (CDSS) are computer-based applications developed to aid healthcare professionals in clinical decision-making by displaying the pertinent knowledge and patient-related information at the right moment of the clinical workflow ([Berner, 2009](#berner-2009)). They may be either passive reference tools — meaning those that are consulted voluntarily by the clinician — or active systems that provide real-time alerts, reminders, or structured recommendations depending on the information entered in a clinical record system.
+
+The literature record shows that there are a variety of clinically significant outcomes related to the implementation of CDSS, such as the decrease in prescription errors, clinical guidelines adherence, shorter diagnostic turnaround time, and fewer drug interactions ([Jaspers et al., 2011](#jaspers-2011)). Nevertheless, the usefulness of a particular CDSS is highly dependent on the quality of the knowledge that it is based upon, the level at which the system is incorporated into clinical practices and the level at which clinicians trust and interact with the results of the system. The latter impacts the design of the AI-assisted consultation feature of the proposed system directly because it is integrated at the location where the symptoms are documented instead of being offered as an independent reference system.
+
+### 2.6.2 Large Language Models as Clinical Decision Support
+
+The development of large language models has introduced a new paradigm of clinical decision support that is significantly more versatile than the conventional rule-based or ontology-driven algorithm. Contrary to prior CDSS designs which required tedious manual curation of medical knowledge bases, LLMs gain extensive clinical reasoning ability through exposure to extensive clinical literature during pre-training. Models such as GPT-4 and Claude have been indicated to be near-clinician in standardised medical licensing tests and clinical reasoning standards, and are capable of generating nuanced differentials, drug interactions, and treatment plan guidance ([Singhal et al., 2022](#singhal-2022)).
+
+More importantly, with free-text symptom descriptions, it is not necessary to have a defined ontology or explicit rule set for LLMs to provide diagnostic suggestions — structured, including differential diagnoses ranked by likelihood, associated pharmacological recommendations, and flags on high-risk presentations. This generative property, coupled with a well-engineered system prompt which captures domain context, local disease prevalence and output formatting needs, creates a clinical decision support tool that is technically flexible as well as practically viable in resource-constrained environments. The suggested system applies this strategy through the OpenAI GPT API, which offers AI-generated recommendations in the form of ranked clinical considerations, in line with accepted ethical guidelines of AI in medicine ([Topol, 2019](#topol-2019)).
+
+### 2.6.3 Historical Data as Clinical Context
+
+An important design principle of the proposed system's decision support feature sets it apart from a generic LLM deployment: the system queries the clinic's own structured consultation history before invoking the language model, retrieving cases from the clinic's real patient population that present with similar symptom profiles. The AI suggestion is therefore grounded in two layers of context: the clinic's own epidemiological data and the model's broader clinical training.
+
+This architecture mirrors the broader retrieval-augmented generation (RAG) paradigm described by [Lewis et al. (2020)](#lewis-2020), in which a generative model's outputs are conditioned on retrieved external information rather than parametric memory alone, substantially reducing the risk of hallucination and improving domain specificity. However, the retrieval mechanism employed in the proposed system is purposefully distinct from classical RAG implementations: rather than converting documents to dense vector embeddings and retrieving semantically similar chunks via approximate nearest-neighbour search, the system performs structured SQL queries against the clinic's PostgreSQL consultation database. The retrieved context is then injected directly into the language model's context window as structured JSON — an approach variously described in the literature as prompt stuffing or long-context augmentation ([Xu et al., 2023](#xu-2023)). This design decision was made on purpose. The clinic's consultation database is inherently relational and amenable to precise structured queries — filtering by symptom terms, diagnosis codes, patient demographics, and date ranges — that produce more reliable and deterministic results than semantic similarity search for this use case. The approach simultaneously eliminates the infrastructure overhead of a vector database and embedding pipeline without meaningful loss of retrieval quality. GPT's large context window further enables the full patient history or aggregated clinic metrics to be passed as context without chunking, making the long-context injection approach technically feasible. The result is a retrieval-augmented interaction grounded in the clinic's own structured clinical reality rather than either generic parametric knowledge or the approximations inherent in embedding-based retrieval.
+
+### 2.6.4 Disease Prevalence and Local Context
+
+Another aspect the design of the AI-assisted clinical decision support in Nigerian contexts takes into account is the marked difference in disease epidemiology between the population on which most LLMs are typically trained and the patient populations in Nigerian primary care. Plasmodium falciparum malaria, typhoid fever, sickle cell disease, and HIV-related opportunistic infections are a much higher proportion of Nigerian clinical presentations than in most Western clinical datasets that are used in the majority of LLM training data.
+
+The system thus responds to this by encoding the prevalence of West African diseases in the system prompt and instructs the model to prioritise its differential diagnoses with respect to this prevalence. Such domain-sensitive prompting is aligned to literature on prompt-engineered clinical decision support, which shows that domain-sensitive contextualisation can drastically enhance the clinical utility of the results generated by LLMs without model fine-tuning ([Brown et al., 2020](#brown-2020)). The output is a decision support system that is significantly modified to suit the local clinical setting where it will be implemented.
+
+---
+
+## 2.7 Intelligence Dashboards and Clinical Analytics
+
+In addition to the transactional operations of patient registration and consultation documentation, recent EMR systems are increasingly integrated with analytics, allowing healthcare administrators and clinicians to obtain operational and epidemiological results on the basis of recorded patient data. The body of literature on clinical analytics suggests the following types of dashboard functionality that are of specific interest to healthcare facilities: operational data (in terms of patient volumes and appointment adherence), clinical epidemiology (i.e., diagnosis prevalence and prescribing patterns), and quality indicators (i.e., follow-up compliance rates) ([Friedman et al., 2014](#friedman-2014)).
+
+Even simple aggregated analytics of that nature would be an improvement to the status quo of Nigerian clinics operating with no meaningful data infrastructure. The capacity to recognise the most frequent diagnoses within the patient population of a clinic, the presence of statistical anomalies related to disease presentation in comparison with the historical background of the clinic, and the trends in drug prescription over time would contribute to evidence-based clinical governance decisions and resource planning decisions that otherwise would rely solely on unaided memory.
+
+The proposed system deploys an intelligence dashboard which will bring these metrics to the surface in real time, and adds a proactive flagging mechanism that compares current period metrics with the rolling historical averages of the clinic to surface anomalies — such as an unusual spike in malaria presentations before a rainy season — without the need to manually investigate. A natural language query interface, which uses OpenAI's API, also allows clinic staff to query structured patient data using natural language inquiries such as "how many paediatric patients had presented with fever in the last month" or "which patients have not attended clinic in over sixty days," without having to learn database query languages. This conversational analytics feature is one of the more unique contributions of the proposed system to the clinical informatics environment in the Nigerian market.
+
+---
+
+## 2.8 Multi-Tenant SaaS Architecture in Healthcare
+
+### 2.8.1 Software-as-a-Service in Clinical Contexts
+
+Software-as-a-Service (SaaS) is a type of software delivery model where the program is centrally located on cloud-based software infrastructure, and accessed by the end-user via the internet, most often on subscription, with no local installation or maintenance required. The SaaS model has acquired significant momentum in healthcare technology in the last 10 years, as it provides the ability to reduce the upfront infrastructure expenses and the ability to make quick feature enhancements without the involvement of the user ([Saripalli & Bisht, 2011](#saripalli-2011)).
+
+The SaaS model fits especially well in the case of small and medium-sized healthcare facilities in Nigeria, who are the main users of the proposed system. Such facilities often do not have IT specialists or the budget to support on-premise server infrastructure. The cloud-based solution that can be accessed with any modern web browser eliminates these obstacles and allows the clinics to enjoy enterprise-level applications at a fraction of the traditional price, with the added benefits of automatic updates and data backup through centralisation.
+
+### 2.8.2 Multi-Tenancy and Data Isolation
+
+Multi-tenancy is a software structure design where a single application serves a number of autonomous clients — sometimes called tenants — while maintaining rigid logical isolation of their records, settings, and operational settings. Regarding the proposed system, a clinic or hospital registering on the platform becomes a unique tenant, and the patient data, consultation data, and institutional settings are perfectly isolated from all other tenants who share the same underlying infrastructure.
+
+The literature acknowledges two main methods of data isolation between tenants: schema-per-tenant, where the information of each customer is stored in a unique database schema, and row-level security, where all tenants share a common database schema with access control being mapped at the query level ([Bezemer and Zaidman, 2010](#bezemer-2010)). The suggested system deploys the latter method through the application of PostgreSQL Row-Level Security (RLS) policies, imposed at the database tier via Supabase. All data tables have a clinic identifier as a foreign key, and RLS policies allow all queries to be scoped to the authenticated user and their respective clinic, and the isolation of data is strong without any architectural complexity of a schema-per-tenant design.
+
+Such an isolation architecture is especially significant in a healthcare environment, in which accidental sharing of patient information between tenants would amount to a severe violation of medical confidentiality and data security requirements in both the Nigerian Data Protection Regulation (NDPR) and the National Health Act. These compliance requirements are further facilitated by the use of a managed cloud database platform that has inbuilt encryption at rest and in transit.
+
+---
+
+## 2.9 Challenges and Limitations
+
+Even though the opportunities of AI-based clinical systems are well-proven in the literature, a number of serious issues should be recognised within the framework of the selected project and the setting in which the trials will be implemented.
+
+The most basic issue is **data privacy and security**. Medical records are one of the most sensitive types of personal information, and any algorithm that processes them — especially one that exposes such data to AI inference APIs on cloud-hosted systems — provokes questions of consent, data sovereignty, and regulatory compliance. These obligations are explicitly considered in the design of the proposed system, and the security controls used at the database level, as well as the scoping of patient data supplied to the OpenAI API, are limited to the lowest amount of information required to accomplish the desired task.
+
+Another technical and ethical issue is **algorithmic bias**. The generalisability of language models trained largely on English-language, Western clinical corpora is not clearly established to be reliable when applied to patients with varying demographic characteristics, disease epidemiologies, or documentation patterns. A risk of clinically inappropriate outputs under the Nigerian setting is partly mitigated by the context-sensitive prompting strategy reported in Section 2.6.4, but cannot be fully avoided in the absence of locally representative training data — which is explicitly mentioned in the system design and considered as one of the priorities in future work.
+
+Another issue is **hallucination**. Large language models can produce believable and factually incorrect outputs, which is an existing limitation of generative AI systems, and of particular concern in medical practice where such inaccurate information may change medical decision-making. The structured output prompting implementation (which limits the space of model responses to a fixed set of formats) and interface design (displaying AI-generated text as ranked decision support, rather than as authoritative clinical judgments) are solutions to this risk proposed in the system. Each of the AI-generated recommendations is subject to recommended confirmatory review, which supports the human-in-the-loop clinical workflow.
+
+There are other practical challenges related to **resource-based constraints** in the Nigerian operational environment. Reliance on external API calls for AI-aided features also creates latency which can be felt in low-bandwidth settings, and disconnected networks can disrupt these capabilities. The system design will embrace graceful degradation measures so that core documentation processes can be fulfilled in the absence of AI support in cases where API calls fail, ensuring that the basic usefulness of the platform is not conditional on the presence of AI features at any point in time.
+
+---
+
+## 2.10 Summary of Literature
+
+The literature reviewed in this chapter is most directly related to the development of the AI-Assisted EMR/EHR SaaS Platform for Nigerian Primary Care. The review has been organised in a logical sequence from the general to the specific: it starts with the general view of artificial intelligence as a field — its history and main areas such as machine learning, deep learning, expert systems, robotics, and generative AI — and finally settles on the more specific architectures and techniques used in the proposed system.
+
+The system and its technical infrastructure were discussed through the transformer architecture and large language models as the fundamental technical infrastructure underlying the AI capabilities of the system, and the emergent properties of instruction-tuned LLMs which enable them to be used as flexible clinical decision support without task-specific fine-tuning. Natural Language Processing, and its clinical adaptations, were discussed as the theoretical framework of the text-based clinical intelligence in the system. The topic of AI-assisted clinical decision support was reviewed in terms of the historical background of computational decision aids in medicine and the current evidence base for the use of LLM-based models, including the necessity to localise AI results to the local disease epidemiology of West Africa.
+
+The proposed system capabilities of the intelligence dashboard and the conversational analytics were placed in the clinical informatics literature, and the multi-tenant SaaS architecture was discussed in context of the practical applicability to the Nigerian healthcare market and the technical process by which tenant information is segregated. The review was topped off with a critical assessment of the challenges, namely data privacy, algorithmic bias, hallucination, and infrastructure constraints.
+
+In all these aspects, there is a clear and large gap in the literature: the reviewed technologies have been tested and proven in high-resource and Western clinical settings with well-organised EHR data. Relatively little scholarly attention has been paid to their application to the disjointed, linguistically varied, and infrastructure-restrained reality of Nigerian primary care. It is this gap in particular that the proposed system will be addressing — uniting AI-assisted decision support, conversational clinical analytics, and cloud-based multi-tenant architecture all within a platform created specifically based on the Nigerian clinical context.
+
+---
+
+## References
+
+- <a name="berner-2009"></a>Berner, E. S. (2009). *Clinical decision support systems: State of the art*. Agency for Healthcare Research and Quality. AHRQ Publication No. 09-0069-EF.
+
+- <a name="bezemer-2010"></a>Bezemer, C. P., & Zaidman, A. (2010). Multi-tenant SaaS applications: Maintenance dream or nightmare? *Proceedings of the Joint ERCIM Workshop on Software Evolution and International Workshop on Principles of Software Evolution*, 88–92.
+
+- <a name="brown-2020"></a>Brown, T. B., Mann, B., Ryder, N., Subbiah, M., Kaplan, J., Dhariwal, P., … Amodei, D. (2020). Language models are few-shot learners. *Advances in Neural Information Processing Systems*, 33, 1877–1901.
+
+- <a name="friedman-2014"></a>Friedman, C. P., Wong, A. K., & Blumenthal, D. (2014). Achieving a nationwide learning health system. *Science Translational Medicine*, 2(57), 57cm29. [https://doi.org/10.1126/scitranslmed.3001456](https://doi.org/10.1126/scitranslmed.3001456)
+
+- <a name="goodfellow-2014"></a>Goodfellow, I., Pouget-Abadie, J., Mirza, M., Xu, B., Warde-Farley, D., Ozair, S., Courville, A., & Bengio, Y. (2014). Generative adversarial nets. *Advances in Neural Information Processing Systems*, 27, 2672–2680.
+
+- <a name="hayes-roth-1983"></a>Hayes-Roth, F., Waterman, D. A., & Lenat, D. B. (1983). *Building expert systems*. Addison-Wesley.
+
+- <a name="jaspers-2011"></a>Jaspers, M. W. M., Smeulers, M., Vermeulen, H., & Peute, L. W. (2011). Effects of clinical decision-support systems on practitioner performance and patient outcomes: A synthesis of high-quality systematic review findings. *Journal of the American Medical Informatics Association*, 18(3), 327–334. [https://doi.org/10.1136/amiajnl-2011-000094](https://doi.org/10.1136/amiajnl-2011-000094)
+
+- <a name="jurafsky-2020"></a>Jurafsky, D., & Martin, J. H. (2020). *Speech and language processing* (3rd ed. draft). Pearson. [https://web.stanford.edu/~jurafsky/slp3/](https://web.stanford.edu/~jurafsky/slp3/)
+
+- <a name="kingma-2013"></a>Kingma, D. P., & Welling, M. (2013). Auto-encoding variational Bayes. *arXiv preprint arXiv:1312.6114*. [https://arxiv.org/abs/1312.6114](https://arxiv.org/abs/1312.6114)
+
+- <a name="lecun-2015"></a>LeCun, Y., Bengio, Y., & Hinton, G. (2015). Deep learning. *Nature*, 521(7553), 436–444. [https://doi.org/10.1038/nature14539](https://doi.org/10.1038/nature14539)
+
+- <a name="lee-2020"></a>Lee, J., Yoon, W., Kim, S., Kim, D., Kim, S., So, C. H., & Kang, J. (2020). BioBERT: A pre-trained biomedical language representation model for biomedical text mining. *Bioinformatics*, 36(4), 1234–1240. [https://doi.org/10.1093/bioinformatics/btz682](https://doi.org/10.1093/bioinformatics/btz682)
+
+- <a name="lewis-2020"></a>Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., … Kiela, D. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. *Advances in Neural Information Processing Systems*, 33, 9459–9474.
+
+- <a name="mccarthy-1955"></a>McCarthy, J., Minsky, M. L., Rochester, N., & Shannon, C. E. (1955). A proposal for the Dartmouth Summer Research Project on Artificial Intelligence. *AI Magazine*, 27(4), 12–14.
+
+- <a name="mitchell-1997"></a>Mitchell, T. M. (1997). *Machine learning*. McGraw-Hill.
+
+- <a name="ouyang-2022"></a>Ouyang, L., Wu, J., Jiang, X., Almeida, D., Wainwright, C. L., Mishkin, P., … Lowe, R. (2022). Training language models to follow instructions with human feedback. *Advances in Neural Information Processing Systems*, 35, 27730–27744.
+
+- <a name="russell-norvig-2021"></a>Russell, S., & Norvig, P. (2021). *Artificial intelligence: A modern approach* (4th ed.). Pearson.
+
+- <a name="saripalli-2011"></a>Saripalli, P., & Bisht, G. (2011). CloudAna: A general cloud analytics platform. *Proceedings of the 3rd IEEE International Conference on Cloud Computing Technology and Science*, 593–597.
+
+- <a name="singhal-2022"></a>Singhal, K., Azizi, S., Tu, T., Mahdavi, S. S., Wei, J., Chung, H. W., … Natarajan, V. (2022). Large language models encode clinical knowledge. *Nature*, 620, 172–180. [https://doi.org/10.1038/s41586-023-06291-2](https://doi.org/10.1038/s41586-023-06291-2)
+
+- <a name="topol-2019"></a>Topol, E. J. (2019). High-performance medicine: The convergence of human and artificial intelligence. *Nature Medicine*, 25(1), 44–56. [https://doi.org/10.1038/s41591-018-0300-7](https://doi.org/10.1038/s41591-018-0300-7)
+
+- <a name="turing-1950"></a>Turing, A. M. (1950). Computing machinery and intelligence. *Mind*, 59(236), 433–460. [https://doi.org/10.1093/mind/LIX.236.433](https://doi.org/10.1093/mind/LIX.236.433)
+
+- <a name="vaswani-2017"></a>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, L., & Polosukhin, I. (2017). Attention is all you need. *Advances in Neural Information Processing Systems*, 30, 5998–6008.
+
+- <a name="wang-2018"></a>Wang, Y., Wang, L., Rastegar-Mojarad, M., Moon, S., Shen, F., Afzal, N., … Liu, H. (2018). Clinical information extraction applications: A literature review. *Journal of Biomedical Informatics*, 77, 34–49. [https://doi.org/10.1016/j.jbi.2017.11.011](https://doi.org/10.1016/j.jbi.2017.11.011)
+
+- <a name="xu-2023"></a>Xu, P., Ping, Y., Tang, X., Liu, W., Li, L., Yu, Z., & Luo, J. (2023). Retrieval meets long context large language models. *arXiv preprint arXiv:2310.03025*. [https://doi.org/10.48550/arXiv.2310.03025](https://doi.org/10.48550/arXiv.2310.03025)

@@ -23,6 +23,7 @@ const eslintConfig = [
   {
     rules: {
       'react-hooks/rules-of-hooks': 'off',
+    
     }
   }
 ];

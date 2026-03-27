@@ -3,7 +3,7 @@ import path from 'path'
 import matter from 'gray-matter'
 
 export const getPostMetaData = () => {
-    const folder = 'src/content/blog/';
+    const folder = 'src/content/chapters/';
     const files = fs.readdirSync(folder);
     // Change this to filter for .mdx files instead of .md
     const markdownPosts = files.filter((file) => file.endsWith('.mdx'))
@@ -29,7 +29,7 @@ export const getPostMetaData = () => {
 }
 
 export const getSnippetMetaData = () => {
-    const folder = 'src/content/snippets/';
+    const folder = 'src/content/notes/';
     const files = fs.readdirSync(folder);
     // Change this to filter for .mdx files instead of .md
     const markdownPosts = files.filter((file) => file.endsWith('.mdx'))
@@ -41,6 +41,7 @@ export const getSnippetMetaData = () => {
         return {
             title: matterResult.data.title,
             date: matterResult.data.date,
+            excerpt: matterResult.data.excerpt,
             description: matterResult.data.description,
             category: matterResult.data.category,
             slug: filename.replace('.mdx', ''),

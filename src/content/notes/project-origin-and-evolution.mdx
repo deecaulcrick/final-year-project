@@ -1,0 +1,60 @@
+---
+title: Project origin and evolution
+description: How the project started, the ASR pivot, the diagnostics reframe, how the intelligence dashboard became the differentiator
+category: Notes
+date: March 26, 2026
+---
+
+## Where this started
+
+The original concept was an EMR/EHR system with a built-in transcription model — essentially a voice-first clinical documentation tool. The sketch on paper included automatic speech recognition as a core feature, with the idea that doctors could dictate consultation notes rather than type them.
+
+The system was always intended as a SaaS product hosted on the cloud, with hospitals and clinics onboarded as users under a multi-tenant architecture.
+
+## The first major pivot
+
+The ASR component was dropped early — not because it isn't a valuable idea, but because my supervisor [redacted].Fine-tuning Whisper on Nigerian medical speech required a labelled corpus of Nigerian clinical audio that doesn't exist in the public domain. Besides collecting that data would have taken longer than the project itself.
+
+It's documented as future work.
+
+## What replaced it
+
+The removal of ASR forced a clearer question: what is the actual core value of this system? The answer became the data layer. Every EMR captures clinical data. Most Nigerian clinic EMRs — where they exist at all — just store it. This project's differentiation is what it does with that data once it's structured.
+
+That reframe shifted the centre of gravity from input (how notes get into the system) to intelligence (what the system does with notes once they're in).
+
+## The legal question about diagnostics
+
+Early in the design, the AI feature was framed as a "diagnosis suggestion" system — the AI reads symptoms and suggests possible diagnoses. This raised a legitimate concern: in Nigeria, under the Medical and Dental Practitioners Act and MDCN guidelines, anything that could be construed as a system offering medical advice creates liability exposure.
+
+The reframe was both a legal protection and a product improvement. Instead of the AI suggesting diagnoses, the system surfaces what the clinic's own doctors have previously diagnosed in similar presentations. The language shifted from:
+
+<Callout type="definition" headings="definition" text="Possible diagnoses: Malaria (high likelihood)"/>
+
+to:
+
+<Callout type="definition" headings="definition" text="In similar presentations at this clinic over the last 6 months, the most common diagnoses were: Malaria (31 cases), Typhoid Fever (12 cases)."/>
+
+
+Same information. Completely different legal category. The first is an AI making a medical claim. The second is a clinic's own historical data being organised and surfaced. The doctor still decides — the system just makes sure they're not deciding in an information vacuum.
+
+## The intelligence dashboard as the real differentiator
+
+Looking at comparable products — Vibrant Practice and August Health — clarified what "clinical intelligence" actually means in a well-designed system. It isn't just charts and tables. It's the system telling you what to pay attention to before you think to ask.
+
+August Health's Insights section does this well: resident watchlists, rising risk flags, cross-community anomaly detection. That proactive framing — the system surfaces anomalies against the clinic's own historical baseline without being asked — became a design principle for the dashboard.
+
+For a Nigerian primary care clinic, even basic aggregate analytics are transformative. Most boutique practices have no idea what their most common diagnoses are, which patients are overdue for follow-up, or whether a particular disease is presenting more frequently than usual. The intelligence dashboard makes that visible for the first time.
+
+## Where the project landed
+
+A cloud-based, multi-tenant EMR/EHR SaaS platform for Nigerian boutique and primary care clinics, with:
+
+- Structured patient registration and consultation documentation
+- AI-assisted clinical documentation support grounded in clinic historical data
+- A real-time intelligence dashboard with proactive anomaly detection
+- A natural language query interface for clinic-level and patient-level data
+- Drug interaction checking against a curated Nigerian formulary
+- Multi-tenant data isolation enforced at the database layer
+
+The AI layer is not the product. The structured clinical data the system accumulates is the product. The AI is the interface to that data.

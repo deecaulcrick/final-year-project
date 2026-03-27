@@ -7,7 +7,7 @@ function SideBar() {
         <div className='hidden lg:flex flex-col border-r border-dashed border-zinc-400 dark:border-zinc-500 px-10 h-screen w-[20%] p-20 justify-between'>
             <div>
                 <h2 className='font-heading text:lg text-lg lg:text-4xl tracking-tight leading-none'>Dee <br />Caulcrick</h2>
-                <p className='font-body text-base mt-6'>A blog on computer science and web development.</p>
+                <p className='font-body text-base mt-6'>Documentation of my undergraduate final year design science research project.</p>
             </div>
             <div className='mt-10 flex justify-between items-end'>
                 <div className='flex gap-2'>

@@ -95,9 +95,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-heading: 'Zodiak', serif;
+  --font-heading: 'Instrument Serif', serif;
   --font-body: 'General Sans', sans-serif;
   --font-mono: 'Tabular', monospace;
+
 }
 
 /* @media (prefers-color-scheme: dark) {

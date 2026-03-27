@@ -5,7 +5,7 @@ import matter from "gray-matter";
 import { getSnippetMetaData } from "@/lib/mdx";
 
 const getPostContent = (slug: string) => {
-    const folder = path.join(process.cwd(), "src/content/snippets/");
+    const folder = path.join(process.cwd(), "src/content/notes/");
     const file = path.join(folder, `${slug}.mdx`);
     const content = fs.readFileSync(file, "utf-8");
     const matterResult = matter(content);

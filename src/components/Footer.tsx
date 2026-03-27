@@ -13,7 +13,7 @@ function Footer() {
                     <Github strokeWidth={0} className='w-5 h-5 inline-block fill-zinc-900 dark:fill-zinc-300 hover:fill-theme-dark-pink dark:hover:fill-theme-dark-pink transition-colors' />
                 </Link>
             </div>
-            <div className='font-mono text-gray-400 text-xs'>&copy; 2020 - {new Date().getFullYear()}</div>
+            <div className='font-mono text-gray-400 text-xs'>&copy; 2020 -{new Date().getFullYear()}</div>
         </div>
     )
 }

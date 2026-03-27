@@ -13,15 +13,14 @@ const components = [
     {
         title: "Home",
         href: "/",
-
     },
     {
-        title: "Snippets",
-        href: "/snippets",
+        title: "Notes",
+        href: "/notes",
     },
     {
-        title: "Library",
-        href: "/library",
+        title: "References",
+        href: "/references",
     },
     {
         title: "About",

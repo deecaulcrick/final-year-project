@@ -1,0 +1,93 @@
+---
+title: Technical decisions
+description: Why not BioBERT, why not classical RAG, why RLS over schema-per-tenant, why Next.js full-stack, why Supabase, why rule-based drug checking
+category: Notes
+date: March 26, 2026
+---
+
+## Why not BioBERT or ClinicalBERT for the AI feature?
+
+Early in the project, the question came up of whether to use a domain-specific medical language model — BioBERT or ClinicalBERT — rather than a general-purpose LLM like Claude.
+
+The conclusion was no, for a specific reason: BioBERT and ClinicalBERT are encoder models, not generative models. They're trained for tasks like named entity recognition, relation extraction, and classification. They don't generate responses. Using them for a conversational or suggestion-generating feature would require:
+
+- Fine-tuning on a task-specific labelled dataset
+- Building a custom inference pipeline
+- Hosting them independently (no free API tier)
+
+That's a master's thesis scope, not a final year project feature.
+
+Claude, by contrast, has strong medical reasoning capability from its training on large volumes of medical literature. The practical difference in output quality for the use case — differential suggestion from symptom descriptions — is negligible. The architectural simplicity is not.
+
+The academically defensible framing: the system uses a large language model with strong medical reasoning capability via API, with scope to integrate a domain-specific model as the system scales and as locally representative training data becomes available.
+
+## Why not classical RAG?
+
+The AI decision support feature uses a retrieval-augmented approach — but not the classical RAG pipeline that most literature describes (vector embeddings, similarity search, chunk retrieval).
+
+The system instead:
+1. Runs a structured SQL query against the clinic's consultation history for symptom-matching cases
+2. Serialises the retrieved results as structured JSON
+3. Injects that JSON directly into the Claude prompt as context
+
+This is sometimes called prompt stuffing or long-context augmentation. The distinction from classical RAG matters and was worth being explicit about in the write-up.
+
+**Why structured SQL over vector search:**
+- The clinic's data is relational and structured — filtering by symptom terms, diagnosis codes, date ranges, and patient demographics is exactly what SQL is designed for
+- Structured queries produce deterministic, auditable results — important in a clinical context where you need to understand why the system surfaced what it surfaced
+- No vector database infrastructure required — removes a significant operational dependency
+- No embedding pipeline required — removes latency and cost
+
+**Why it still counts as RAG:**
+Lewis et al. (2020) define RAG as conditioning a generative model's outputs on retrieved external information rather than parametric memory alone. The mechanism of retrieval doesn't have to be semantic vector search — structured SQL retrieval satisfies the definition. The system is retrieval-augmented in the Lewis et al. sense; it just uses a different (and in this case more appropriate) retrieval method.
+
+Claude's large context window makes the long-context injection approach feasible — a full patient history or a clinic's aggregated metrics can be passed without chunking.
+
+## Why multi-tenant with row-level security rather than schema-per-tenant?
+
+Two primary approaches to multi-tenant data isolation exist:
+- **Schema-per-tenant**: each clinic gets its own database schema
+- **Row-level security**: all tenants share a schema, with access controlled per row
+
+Schema-per-tenant is more familiar conceptually but adds significant operational complexity: migrations have to run across every tenant schema, and managing hundreds of schemas becomes increasingly difficult at scale.
+
+Row-level security, enforced via PostgreSQL RLS policies, handles isolation at the database engine level. Every table has a `clinic_id` foreign key. A helper function reads the authenticated user's associated clinic from the profiles table. RLS policies evaluate this on every query automatically.
+
+The critical property: even if there is an application-layer bug or a misconfigured API route, the database itself will not return rows belonging to the wrong tenant. The isolation is enforced below the application, not by it.
+
+For a final year project, it's also the simpler implementation path — Supabase has first-class RLS support with clear documentation.
+
+## Why Next.js rather than a separate frontend and backend?
+
+The full-stack Next.js approach (frontend + API routes in one project) was chosen over a separate React frontend and Node/Express backend for three reasons:
+
+1. **Deployment simplicity** — a single Vercel deployment handles everything. No separate backend service to manage, scale, or secure.
+2. **Speed of development** — API routes live alongside the frontend code. Context switching between two codebases adds overhead that matters on a tight timeline.
+3. **Maturity** — Next.js 14 App Router is production-grade. The architectural trade-offs of co-locating frontend and backend are well-understood.
+
+The trade-off is that the API routes are tightly coupled to the frontend framework. For a production system at scale, a dedicated backend service would provide better separation of concerns. For an MVP and final year project, the coupling is acceptable.
+
+## Why Supabase over a self-managed PostgreSQL instance?
+
+Supabase provides PostgreSQL with:
+- Built-in authentication (JWT, session management)
+- Native RLS support integrated with auth
+- A JavaScript client SDK
+- Managed hosting (no DBA overhead)
+- Free tier sufficient for development and demonstration
+
+The alternative — self-managing a PostgreSQL instance on a VPS — would have required significant infrastructure work (SSL configuration, connection pooling, backup management, security hardening) that would have consumed time better spent on application features.
+
+The trade-off is vendor dependency. For a production system, this is a real consideration. For a final year project MVP, Supabase is the pragmatic choice.
+
+## Drug interaction checking: why rule-based rather than AI?
+
+The drug interaction checker was explicitly built as a deterministic rule-based module rather than an LLM inference feature. The reasoning is straightforward:
+
+**Hallucination is not acceptable here.** An LLM generating a plausible-sounding but incorrect drug interaction assessment — or missing a real one — could directly contribute to patient harm. The stakes are different from a dashboard query or a consultation note suggestion.
+
+**Determinism is the requirement.** A doctor needs to know that if Drug A + Drug B always triggers a warning, that warning will always appear. Not sometimes. Not usually. Always.
+
+**The data is structured.** Drug interaction data is tabular — drug pairs with interaction severity and clinical significance. This is exactly the kind of structured, rule-based knowledge that should be in a database, not inferred by a language model on the fly.
+
+The interaction database is drawn from the British National Formulary and WHO Model Formulary, cross-referenced against drugs commonly prescribed in Nigerian primary care.
