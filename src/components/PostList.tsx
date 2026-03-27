@@ -11,7 +11,7 @@ function PostList() {
                 <div key={post.slug} className="post-card mb-6 grid md:grid-cols-12 border-b border-zinc-200 dark:border-zinc-800 py-6 gap-12 px-8 md:px-15">
                     <div className="md:col-span-4">
                         <h2 className="font-heading font-medium text-3xl tracking-tighter mb-4 hover:underline hover:decoration-theme-pink">
-                            <Link href={`/posts/${post.slug}`} className="post-card-title">
+                            <Link href={`/chapters/${post.slug}`} className="post-card-title">
                                 {post.title}
                             </Link>
                         </h2>
@@ -22,7 +22,7 @@ function PostList() {
 
                     </div>
                     <div className="md:col-span-2 flex md:justify-center items-center">
-                        <Link href={`/posts/${post.slug}`} className="font-bold">
+                        <Link href={`/chapters/${post.slug}`} className="font-bold">
                             <MoveRight strokeWidth={1} size={24} className="inline-block" />
                         </Link>
                     </div>

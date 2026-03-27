@@ -7,7 +7,7 @@ function MobileHero() {
         <div className='lg:hidden flex-col border-b border-dashed border-zinc-400 dark:border-zinc-500 px-10 p-10 justify-between'>
             <div>
                 <h2 className='font-heading text-4xl tracking-tight leading-none'>Dee <br />Caulcrick</h2>
-                <p className='font-body text-base mt-6'>A blog on computer science and web development.</p>
+                <p className='font-body text-base mt-6'>Documentation of my undergraduate final year design science research project.</p>
             </div>
             <div className='mt-10 flex justify-between items-end'>
                 <div className='flex gap-2'>

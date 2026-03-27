@@ -37,11 +37,7 @@ const singlePost = async (props: SinglePostProps) => {
 
     return (
         <>
-            {/* <div className=" header w-full">
-      </div> */}
-
-
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center overflow-hidden">
                 <div className="flex flex-col md:flex-row gap-10 md:gap-20 px-8 md:px-16 py-16">
                     <div className="w-full md:w-[80%]">
                         <div className="mb-4">

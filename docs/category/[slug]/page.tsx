@@ -36,12 +36,12 @@ function categoryPage(props: CategoryProps) {
                         {posts.map((post) => (
                             <div key={post.slug} className="rounded-lg shadow-lg p-10 mb-6 border border-gray-100 dark:border-gray-800">
                                 <h2 className="text-theme-pink font-medium text-2xl tracking-tighter mb-4 hover:underline hover:decoration-theme-pink">
-                                    <Link href={`/posts/${post.slug}`} className="post-card-title">
+                                    <Link href={`/chapters/${post.slug}`} className="post-card-title">
                                         {post.title}
                                     </Link>
                                 </h2>
                                 <p className="mb-6">{post.excerpt}</p>
-                                <Link href={`/posts/${post.slug}`} className="font-bold">
+                                <Link href={`/chapters/${post.slug}`} className="font-bold">
                                     Read more
                                 </Link>
                                 {/* <p className="post-date">{post.date}</p> */}

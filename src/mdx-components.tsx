@@ -65,7 +65,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     // Custom list styling
     ul: ({ children }) => (
-      <ul className="list-disc mb-4 space-y-2 ml-4">
+      <ul className="list-disc mb-4 space-y-2 ml-4 ">
         {children}
       </ul>
     ),
@@ -77,7 +77,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ),
 
     li: ({ children }) => (
-      <li className="text-foreground leading-relaxed">
+      <li className="text-foreground leading-relaxed ">
         {children}
       </li>
     ),
@@ -86,7 +86,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     a: ({ href, children }) => (
       <a
         href={href}
-        className="text-theme-orange dark:text-theme-pink hover:text-theme-pink dark:hover:text-theme-blue underline transition-colors"
+        className="text-theme-orange dark:text-theme-pink hover:text-theme-pink dark:hover:text-theme-blue underline transition-colors break-all"
         target={href?.startsWith('http') ? '_blank' : undefined}
         rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
       >
