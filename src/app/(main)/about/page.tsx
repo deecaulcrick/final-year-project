@@ -1,7 +1,6 @@
 import React from 'react'
 import Image from 'next/image'
 import Card from '@/components/ui/Card'
-import Shelf from '@/components/drawings/Shelf'
 
 function page() {
     return (
