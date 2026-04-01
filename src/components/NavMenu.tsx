@@ -10,10 +10,9 @@ import {
 
 
 
-
 const NavMenu = () => {
     return (
-        <NavigationMenu viewport={false}>
+        <NavigationMenu viewport={false} className='relative flex'>
             <NavigationMenuList>
 
                 <NavigationMenuItem>
@@ -39,7 +38,6 @@ const NavMenu = () => {
                         <Link href="/about">About </Link>
                     </NavigationMenuLink>
                 </NavigationMenuItem>
-
 
             </NavigationMenuList>
         </NavigationMenu>
