@@ -9,9 +9,7 @@ export default function RootLayout({
 }>) {
   return (
     <div className="flex justify-center h-screen">
-      <div className="container border-x border-dashed border-zinc-400 dark:border-zinc-500 flex ">
-        <SideBar />
-        <div className="flex-1 overflow-y-auto hide-scrollbar ">
+      <div className="flex-1 overflow-y-auto hide-scrollbar ">
           <div className="relative w-full">
             <Header />
           </div>
@@ -22,7 +20,7 @@ export default function RootLayout({
             <Footer />
           </div>
         </div>
-      </div>
+      
 
     </div>
   );

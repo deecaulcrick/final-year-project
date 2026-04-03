@@ -1,11 +1,114 @@
 ---
 title: "Chapter I: Introduction"
-subheading: "Why Nigerian Primary Care Needs a Smarter System — and What Happens When It Gets One"
-excerpt: Thousands of clinics. Millions of patients. Paper folders, WhatsApp groups, and a doctor's memory. This is where the project begins.
+subheading: "Why Nigerian Primary Care Needs a Smarter System and What Happens When It Gets One"
+excerpt: Thousands of clinics. Millions of patients. Paper folders, WhatsApp messages, and a doctor's memory. This is where the project begins.
 date: March 27, 2026
 category: research
 tag: Research
 coverImage: ""
 ---
 
-<Callout type="disclaimer" heading="Disclaimer" text="I haven't started on this yet. My supervisor says it's the last thing to be written"/>
+
+## 1.1 Background to the Study
+
+When a patient visits a new doctor in Nigeria, one of the first questions they hear is: do you have your previous records? For many people, the answer is complicated. Records might be scattered across three hospitals, tucked into a folder at home, or simply lost. Even when a patient brings their documents, the doctor has to manually flip through pages of handwritten notes, faded lab printouts, and old prescriptions to piece together the medical history. This is not a rare situation. For millions of Nigerians, it is the norm.
+
+Nigeria's healthcare system serves a population of over 220 million people across federal, state, and private facilities. These facilities largely operate in isolation — a patient treated at a teaching hospital in Lagos is, in most cases, a complete stranger to the clinic they visit in Abuja. There is no shared record. Each provider starts from scratch. The result is a system where the patient becomes their own medical record, expected to remember drug names, dosages, and diagnoses across years of care.
+
+The problem runs deeper than inconvenience. When a clinician cannot access a patient's full medication history, drug interactions go undetected. When a patient cannot recall their diagnosis, the wrong treatment pathway may be followed. For patients managing long-term conditions — sickle cell disease, hypertension, diabetes, HIV — this fragmentation is not just frustrating; it is a genuine safety risk.
+
+The Nigerian government has recognised this problem. The National Digital Health Initiative (NDHI) sets out a vision for a digital health ecosystem where patients own and control their health data through Personal Health Records (PHRs), and where clinicians across facilities can access a shared, consistent view of a patient's history. Realising that vision, however, faces a real obstacle: most of Nigeria's healthcare data does not exist in a structured, digital format ready for a modern health system. It exists as handwritten consultation notes, scanned prescription slips, PDF lab results, and free-text discharge summaries — documents that computers cannot easily read, search, or analyse.
+
+This is where recent advances in artificial intelligence become relevant. Natural Language Processing (NLP) — the field of AI concerned with understanding human language — has produced techniques that can read unstructured clinical text and extract meaning from it. Named Entity Recognition (NER), for instance, can scan a discharge summary and automatically identify the drugs mentioned, the diagnoses recorded, and the dates referenced. Retrieval-Augmented Generation (RAG), a newer approach, goes further: it allows an AI system to answer questions about a document by searching for the relevant passages and generating a response grounded in what it finds, rather than guessing from general knowledge.
+
+Together, these technologies make it possible to build a system that accepts a patient's existing documents — in whatever format they come — and turns them into something the patient can actually use: a record they can search, query, and understand. This study designs, builds, and evaluates exactly such a system, tailored specifically to the realities of Nigerian healthcare.
+
+
+## 1.2 Statement of the Problem
+
+Despite growing investment in digital health, most Nigerian patients still cannot access a coherent view of their own medical history. Their records are fragmented across facilities, written in formats that neither patients nor computers can easily interpret, and stored in ways that make retrieval difficult when it matters most.
+
+This problem has four dimensions. First, records are scattered. A patient who has seen multiple doctors over several years may hold paper records from each visit, but no single document captures the full picture — not for the patient, and not for any of their doctors. Second, the records that exist are largely unstructured. Lab results, consultation notes, and discharge summaries are written in free text, often by hand, and cannot be searched or compared without someone physically reading through every page. Third, patients cannot easily make sense of their own records. Medical abbreviations and clinical terminology make it difficult for most people to understand what their documents say, let alone identify trends or prepare informed questions for their next appointment. Fourth, existing digital health tools do not fit this context. Most personal health record systems on the market assume that a patient's data already exists in a structured, digital format. In Nigeria, that assumption fails for the vast majority of patients.
+
+The combined effect is that patients arrive at appointments unprepared, clinicians make decisions with incomplete information, and the health system absorbs the downstream costs of preventable errors. This study addresses this problem by building and evaluating a system that works with the records patients already have — unstructured, mixed-format, and drawn from multiple sources — and makes them searchable, understandable, and useful.
+
+
+## 1.3 Aim and Objectives
+
+### 1.3.1 Aim
+
+This study aims to design, develop, and evaluate an AI-powered personal health record system that allows Nigerian patients to upload their medical documents and ask questions about them in plain language, receiving accurate answers drawn directly from their own records.
+
+### 1.3.2 Objectives
+
+To achieve this aim, the study pursues the following objectives:
+
+1. To review literature on clinical natural language processing, named entity recognition, retrieval-augmented generation, and digital health in Nigeria, and to identify the most appropriate technical approaches for this context.
+
+2. To design a system architecture for ingesting, processing, and querying unstructured medical documents, suited to the document types and clinical language found in Nigerian healthcare settings.
+
+3. To implement a Named Entity Recognition pipeline using a pre-trained biomedical language model that identifies clinically relevant terms — including diseases, medications, symptoms, lab values, and dates — from patient documents.
+
+4. To implement a Retrieval-Augmented Generation pipeline that enables patients to ask natural language questions about their records and receive accurate, source-cited answers grounded in the content of their uploaded documents.
+
+5. To evaluate system performance using defined metrics — NER precision, recall and F1 score, retrieval Precision@K and Recall@K — and to compare the RAG-based approach against a naive language model baseline without retrieval.
+
+
+## 1.4 Scope of the Study
+
+This study focuses on building and evaluating a patient-facing web application that handles four core functions: uploading and storing medical documents, highlighting named entities extracted from those documents, answering natural language questions about them, and displaying a summary dashboard of the patient's extracted health information. The system does not connect to hospital databases, provide clinical decision support, or offer features like appointment booking. It is a standalone tool.
+
+The primary user is a literate Nigerian adult who has accumulated medical documents across multiple facilities and wants to store and understand them in one place. While clinicians are not the target user, they may indirectly benefit when better-prepared patients arrive at appointments with organised, accessible health histories.
+
+The system processes English-language documents, including typed PDFs, scanned records, and photographed documents. Documents written primarily in Nigerian Pidgin English, Yoruba, Igbo, Hausa, or other Nigerian languages are outside the current scope. This is a recognised limitation and a clear direction for future work. No real patient data is used at any stage of this study. All development and evaluation use synthetic clinical documents that reflect the structure and content of real Nigerian health records.
+
+The system is built as a web prototype, evaluated at small scale. Large-scale deployment, mobile application development, multi-language support, and formal integration with the NDHI infrastructure are all identified as future work.
+
+
+## 1.5 Significance of the Study
+
+This study contributes at three levels: to individual patients, to Nigeria's digital health agenda, and to academic research on clinical AI in low-resource settings.
+
+For patients, the system offers something practical and immediate. A patient with sickle cell disease who has visited four hospitals over ten years can upload all their records and, for the first time, ask: what drugs have I been prescribed? What was my last haemoglobin result? What did the doctor say at my last admission? Getting clear answers to these questions — with citations showing exactly where the information came from — is not a small thing. It changes how a patient can prepare for an appointment, communicate with a new doctor, or manage their own care. For patients living with chronic conditions, this kind of access to their own history has direct implications for safety and outcomes.
+
+For Nigeria's health system, the study demonstrates a practical pathway toward the NDHI's PHR vision that does not require hospitals to change their systems or patients to acquire new documents. The system works with what already exists: the physical folder, the PDF email attachment, the photo of a lab result. It does not replace institutional infrastructure — it adds a patient-side intelligence layer that can eventually connect to it. This makes it relevant not just as a research prototype but as a potential building block for the national digital health ecosystem.
+
+For the research community, this study addresses a gap identified clearly in the literature. Prior work on clinical NLP and medical RAG has been conducted almost entirely in well-resourced settings, using structured EHR data from Western hospital systems. This study evaluates an NLP and RAG-based approach on unstructured documents that reflect the fragmented, informal, and document-heavy reality of Nigerian healthcare — a context that has not previously been studied. The evaluation methodology, the synthetic Nigerian clinical dataset, and the analysis of model performance on Nigeria-specific clinical language all constitute original contributions to this emerging field.
+
+
+## 1.6 Definition of Terms
+
+The following terms appear throughout this dissertation. They are defined here to ensure clarity for all readers.
+
+| Term | Definition |
+|----|----|
+| **Artificial Intelligence (AI)** | The ability of computer systems to perform tasks that normally require human intelligence — such as understanding language, recognising patterns, and making decisions. |
+| **Electronic Health Record (EHR)** | A digital version of a patient's medical history maintained by a healthcare provider or institution, containing diagnoses, medications, test results, and treatment plans. |
+| **Electronic Medical Record (EMR)** | A digital record of a patient's health information within a single clinic or hospital. Unlike EHRs, EMRs are typically not shared across organisations. |
+| **Personal Health Record (PHR)** | A health record that the patient owns and manages themselves, bringing together medical information from different providers and facilities in one place. |
+| **Natural Language Processing (NLP)** | A field of artificial intelligence focused on enabling computers to read, understand, and generate human language. |
+| **Named Entity Recognition (NER)** | An NLP technique that automatically identifies and labels specific terms in a text — such as drug names, diseases, and dates — according to their category. |
+| **Retrieval-Augmented Generation (RAG)** | An AI approach that combines document search with language generation. Instead of relying only on what a model learned during training, RAG retrieves relevant passages from a document and uses them to produce a grounded, accurate answer. |
+| **Large Language Model (LLM)** | A deep learning model trained on large amounts of text, capable of generating coherent and contextually appropriate language across a wide range of tasks. |
+| **Vector Database** | A database that stores text as numerical representations (vectors), making it possible to search by meaning rather than exact keywords. |
+| **Embedding** | A numerical representation of a piece of text that captures its meaning in a way that computers can compare and search. |
+| **Hallucination** | When a language model generates information that sounds plausible but is not supported by the input it was given. This is a known risk in AI-generated medical content. |
+| **Optical Character Recognition (OCR)** | Software that reads and converts images of printed or handwritten text into machine-readable text. |
+| **NDHI** | Nigeria's National Digital Health Initiative — a government programme working to build a national digital health system, including Personal Health Records and Shared Health Records infrastructure. |
+| **BioBERT** | A language model pre-trained on biomedical research text (PubMed and PubMed Central). It is used in this study for identifying medical entities in clinical documents. |
+| **ChromaDB** | An open-source vector database used in this system to store text embeddings and enable fast, semantically-aware document retrieval. |
+
+
+## 1.7 Organisation of the Dissertation
+
+This dissertation is organised into five chapters.
+
+**Chapter One** — this chapter — introduces the study. It explains the problem, states the aim and objectives, and describes the scope and significance of the work.
+
+**Chapter Two** presents the literature review. It covers artificial intelligence in healthcare, clinical natural language processing, named entity recognition, retrieval-augmented generation, and the state of digital health in Nigeria. It ends by identifying the specific research gap this study addresses, and includes a comparative table of related prior work.
+
+**Chapter Three** describes the methodology. It explains the research design and gives a detailed account of how the system was built — covering the document processing pipeline, the NER component, the embedding and retrieval system, and the RAG generation layer. It also defines how the system was evaluated.
+
+**Chapter Four** presents the results and discussion. It reports NER performance, retrieval quality, and the RAG versus baseline comparison. It also covers findings from the usability evaluation, and discusses all results in relation to the research objectives and the literature.
+
+**Chapter Five** concludes the dissertation. It summarises the key findings, reflects on what was and was not achieved, acknowledges the limitations of the work, and proposes directions for future research.

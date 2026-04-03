@@ -1,25 +1,13 @@
 import React from 'react'
-import { Linkedin, Github } from 'lucide-react'
-import Link from 'next/link'
 
 function MobileHero() {
     return (
-        <div className='lg:hidden flex-col border-b border-dashed border-zinc-400 dark:border-zinc-500 px-10 p-10 justify-between'>
-            <div>
-                <h2 className='font-heading text-4xl tracking-tight leading-none'>Dee <br />Caulcrick</h2>
-                <p className='font-body text-base mt-6'>Documentation of my undergraduate final year design science research project.</p>
+        <div className='p-6 md:p-10 mt-20'>
+            <div className='md:w-[70%]'>
+                <h1 className='font-heading text-5xl md:text-8xl tracking-tighter font-medium text-heading-text-color leading-none'>Rethinking how Nigerians interact with their medical history </h1>
+                <p className='font-body text-base md:text-xl mt-6 text-body-text-color'>An AI-powered system that turns scattered medical records into a searchable, explainable, and patient-friendly health timeline. Built as a research project at the University of Lagos. Focused on real-world Nigerian healthcare challenges.</p>
             </div>
-            <div className='mt-10 flex justify-between items-end'>
-                <div className='flex gap-2'>
-                    <Link href="https://www.linkedin.com/in/deborah-caulcrick/" target="_blank" rel="noopener noreferrer" className='inline-block '>
-                        <Linkedin strokeWidth={0} className='w-5 h-5 inline-block fill-zinc-900 dark:fill-zinc-300 hover:fill-theme-dark-pink dark:hover:fill-theme-dark-pink transition-colors' />
-                    </Link>
-                    <Link href="https://github.com/deecaulcrick" target="_blank" className='inline-block'>
-                        <Github strokeWidth={0} className='w-5 h-5 inline-block fill-zinc-900 dark:fill-zinc-300 hover:fill-theme-dark-pink dark:hover:fill-theme-dark-pink transition-colors' />
-                    </Link>
-                </div>
-                <div className='font-mono text-gray-400 text-xs'>&copy; 2020 - {new Date().getFullYear()}</div>
-            </div>
+
         </div>
     )
 }

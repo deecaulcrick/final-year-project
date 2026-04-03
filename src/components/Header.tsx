@@ -1,31 +1,77 @@
 import React from 'react'
-import DarkModeToggle from '@/components/ui/DarkModeToggle'
 import NavMenu from './NavMenu'
-import SoundToggle from './ui/SoundToggle'
 import MobileMenu from './MobileMenu'
 import Link from 'next/link'
+
+const menuItems = [
+    {
+        title: "Home",
+        link: "/"
+    },
+    {
+        title: "Notes",
+        link: "/notes"
+    },
+    // {
+    //     title: "Refs",
+    //     link: "/references"
+    // },
+    {
+        title: "About",
+        link: "/about"
+    },
+]
+
+const socialLinks = [
+    {
+        title: "GitHub",
+        link: "https://github.com/deecaulcrick"
+    },
+    {
+        title: "LinkedIn",
+        link: "https://linkedin.com/in/deborah-caulcrick"
+    },
+]
+
 
 function Header() {
 
     return (
-        <div className='w-full py-6 px-8 md:px-15 flex justify-between gap-10 items-center border-b border-dashed border-zinc-400 dark:border-zinc-500 z-50'>
-            <div className='md:col-span-6 gap-4 items-center hidden md:flex'>
-                <NavMenu />
+        <div className='w-full fixed top-0 left-0 rounded-sm flex justify-between items-center z-50 p-4'>
+            <div className='w-fit flex justify-between items-center gap-1'>
+                {
+                    menuItems.map((item) => (
+                        <NavButton key={item.title} link={item.link} text={item.title} />
+                    ))
+                }
+            </div>
+            <div className='w-fit flex justify-center items-center gap-1'>
+                {
+                    socialLinks.map((item) => (
+                        <NavButton key={item.title} link={item.link} text={item.title} />
+                    ))
+                }
+            </div>
 
-            </div>
-            <div className='md:hidden flex flex-row-reverse gap-1 items-center'>
 
-                <div><MobileMenu /></div>
-                <div className='font-heading text-xl border-r border-zinc-400 dark:border-zinc-500 pr-6 text-zinc-900 dark:text-zinc-300'>
-                    <Link href="/">DC</Link>
-                </div>
-            </div>
-            <div className=' col-span-6 md:col-span-3 flex gap-4 items-right justify-end'>
-                {/* <div><SoundToggle /></div> */}
-                <div><DarkModeToggle /></div>
-            </div>
         </div>
     )
 }
 
 export default Header
+
+function NavButton({ link, text }: { link: string, text: string }) {
+    return (
+
+        <div className='font-mono bg-[#0A2534] py-1 px-2 rounded-xs text-terminal-highlight group hover:bg-theme-lime hover:text-background transition-colors'>
+            <Link href={link} className='flex items-center gap-2'>
+                {/* <div className='w-1 h-1 rounded-full  bg-terminal-highlight group-hover:bg-background' /> */}
+                <div className='uppercase tracking-tighter text-sm'>
+                    {text}
+                </div>
+            </Link>
+        </div >
+
+
+    )
+}

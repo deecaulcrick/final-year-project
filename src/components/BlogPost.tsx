@@ -2,6 +2,7 @@
 import { compileMDX } from 'next-mdx-remote/rsc'
 import { useMDXComponents } from '@/mdx-components'
 import rehypeSlug from 'rehype-slug'
+import remarkGfm from 'remark-gfm'
 
 interface BlogPostProps {
   content: string;
@@ -16,7 +17,8 @@ async function BlogPost({ content }: BlogPostProps) {
     options: {
       parseFrontmatter: true,
       mdxOptions: {
-        remarkPlugins: [],
+        // Enable GitHub-flavored markdown features like tables.
+        remarkPlugins: [remarkGfm],
         rehypePlugins: [
           rehypeSlug, // Add IDs to headings
         ],

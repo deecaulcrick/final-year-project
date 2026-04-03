@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Instrument_Serif } from "next/font/google";
-import { ThemeProvider } from "next-themes";
+import {JetBrains_Mono} from "next/font/google"
 import "./globals.css";
 
-const instrumentSerif = Instrument_Serif({
+const jetBrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-instrument-serif",
-  weight: "400",
+  variable: "--font-jetbrains-mono",
+  weight: ["400", "500", "700"],
 });
 
 const generalSans = localFont({
@@ -57,12 +56,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${generalSans.variable} ${zodiak.variable} ${tabular.variable} ${instrumentSerif.variable} antialiased `} >
-        <ThemeProvider attribute="class" defaultTheme="system">
+      <body className={`${generalSans.variable} ${zodiak.variable} ${jetBrainsMono.variable} antialiased `} >
 
           {children}
 
-        </ThemeProvider>
       </body>
     </html>
   );

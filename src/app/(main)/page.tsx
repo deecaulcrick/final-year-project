@@ -1,5 +1,7 @@
 import PostList from "@/components/PostList";
 import MobileHero from "@/components/MobileHero";
+import { Snippet } from "next/font/google";
+import SnippetTable from "@/components/SnippetTable";
 
 
 export default function Home() {
@@ -12,6 +14,7 @@ export default function Home() {
         <div className="w-full">
           {/* <h2 className="font-heading text-theme-dark-pink font-medium text-2xl mb-10">Recent Articles</h2> */}
           <PostList />
+          <SnippetTable />
         </div>
 
       </div>

@@ -8,6 +8,7 @@
   --dark-green: #0E3926;
   --dark-pink: #EC1864;
   --blue: #9FE5FF;
+  --lime: #AAE87B;
   --orange: #FF5738;
   --pink: #FFABCF;
   --yellow: #EDBA3D;
@@ -16,7 +17,6 @@
   --purple: #95B0DD;
   --radius: 0.625rem;
   --background: #f0f0f0;
-  /* --background: oklch(1 0 0); */
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -50,9 +50,11 @@
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: #011627;
+  --color-foreground: #5F7D97;
+  /* --color-foreground: var(--foreground); */
   --color-theme-orange: var(--orange);
+  --color-theme-lime: var(--lime);
   --color-theme-dark-pink: var(--dark-pink);
   --color-theme-dark-green: var(--dark-green);
   --color-theme-light-blue: var(--light-blue);
@@ -95,9 +97,14 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-heading: 'Instrument Serif', serif;
+  --font-heading: 'General Sans', sans-serif;
   --font-body: 'General Sans', sans-serif;
-  --font-mono: 'Tabular', monospace;
+  --font-mono: 'JetBrains Mono', monospace;
+  --color-heading-text-color: #C0C7D1;
+  --color-terminal-highlight: #75D1C4;
+  --color-body-text-color: #5F7D97;
+  --color-section-label: #5F7D97;
+  --color-tag-color:#9372C9;
 
 }
 
@@ -109,7 +116,7 @@
 } */
 
 .h1{
-  @apply font-heading text-5xl font-normal mb-4;
+  @apply font-heading text-6xl font-medium mb-4;
 }
 .h2{
   @apply font-heading text-4xl font-normal mb-4;
@@ -133,8 +140,8 @@
   @apply text-base mb-4;
 } */
 ::selection{
-  background: var(--color-theme-pink);
-  color: white;
+  background: var(--color-theme-lime);
+  color: black;
 }
 
 .header{
@@ -160,7 +167,7 @@
 
 body {
   font-family: var(--font-general-sans), Arial, Helvetica, sans-serif;
-  background: var(--background);
+  background: #011627;
   color: var(--foreground);
 }
 .hide-scrollbar::-webkit-scrollbar {
@@ -178,8 +185,9 @@ body {
 } */
 
 .dark {
-  --background: #161616;
+  --background: #011627;
   /* --background: oklch(0.145 0 0); */
+  --color-heading-text-color: #C0C7D1;
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
   --card-foreground: oklch(0.985 0 0);

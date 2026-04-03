@@ -6,25 +6,36 @@ function SnippetTable() {
     const postMetaData = getSnippetMetaData();
 
     return (
-        <div className="mt-20">
+        <div className="p-6 md:p-10 mt-20">
+            <h2 className="tracking-tighter text-4xl md:text-6xl font-medium text-heading-text-color">Notes<sup className="text-theme-lime text-2xl">({postMetaData.length})</sup></h2>
 
-            <div className=" grid md:grid-cols-2 gap-6">
+            <div className="hidden md:grid mt-10 border-b-1 border-b-section-label md:grid-cols-12 gap-4">
+                <div className="col-span-2 font-mono uppercase tracking-tighter text-section-label">/Date</div>
+
+                <div className="col-span-10 font-mono uppercase tracking-tighter text-section-label">
+                    /Title
+                </div>
+
+            </div>
+
+            <div className="mt-2 ">
                 {postMetaData.map((post) => (
-                    <div key={post.slug} className="rounded-sm p-10 mb-6 border border-zinc-200 dark:border-zinc-800">
-                        <h2 className="font-heading font-light text-3xl tracking-tighter mb-4  text-theme-dark-green dark:text-theme-blue">
-                            <Link href={`/notes/${post.slug}`} className="post-card-title">
+                    <Link href={`/notes/${post.slug}`} key={post.slug}>
+                        <div className="group grid md:grid-cols-12 gap-1 md:gap-4 border-b-1 border-b-section-label align-middle py-2 items-center hover:bg-theme-lime transition-colors">
+                            <p className="group-hover:text-background col-span-2 text-theme-dark-pink font-mono uppercase text-xs">{post.date}</p>
+
+                            <h2 className="group-hover:text-background col-span-10 font-heading text-2xl tracking-tighter text-heading-text-color ">
+
                                 {post.title}
-                            </Link>
-                        </h2>
-                        <p className="font-body mb-6">{post.description}</p>
-                        <Link href={`/notes/${post.slug}`} className="font-bold">
-                            <MoveRight strokeWidth={1} size={24} className="inline-block" />
-                        </Link>
-                        {/* <p className="post-date">{post.date}</p> */}
-                    </div>
+
+                            </h2>
+                        </div>
+                    </Link>
+
+
                 ))}
             </div>
-        </div>
+        </div >
     );
 }
 

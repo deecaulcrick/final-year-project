@@ -14,24 +14,24 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     // Custom headings with consistent styling
     h1: ({ children, ...props }) => (
-      <h1 {...props} className="text-6xl font-bold mb-6 mt-8 text-foreground border-b pb-2">
+      <h1 {...props} className="text-6xl font-heading font-bold mb-6 mt-8 text-foreground border-b pb-2">
         {children}
       </h1>
     ),
     h2: ({ children, ...props }) => (
-      <h2 {...props} className=" font-heading relative px-4 text-5xl text-theme-dark-green tracking-tight dark:text-theme-blue font-normal mb-4 mt-8 before:content-['#'] before:font-normal before:absolute before:-left-4 before:hidden hover:before:block before:transition-all">
+      <h2 {...props} className=" font-heading font-medium relative px-4 text-5xl tracking-tighter text-terminal-highlight mb-4 mt-8 before:content-['#'] before:font-normal before:absolute before:-left-4 before:hidden hover:before:block before:transition-all">
         {children}
       </h2>
     ),
     h3: ({ children, ...props }) => (
-      <h3 {...props} className="font-heading text-3xl px-4 font-normal mb-3 mt-6  text-theme-orange dark:text-theme-pink">
+      <h3 {...props} className="font-heading text-3xl px-4 font-medium tracking-tighter mb-3 mt-6  text-heading-text-color dark:text-theme-pink">
         {children}
       </h3>
     ),
 
     // Custom paragraph styling
     p: ({ children }) => (
-      <p className="font-body mb-4 px-4 leading-relaxed text-foreground text-lg">
+      <p className="font-body mb-4 px-4 leading-relaxed text-body-text-color text-lg">
         {children}
       </p>
     ),
@@ -62,6 +62,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {children}
       </blockquote>
     ),
+    hr: ({ }) => (
+      <hr className="my-8 border-t border-section-label" />
+    ),
 
     // Custom list styling
     ul: ({ children }) => (
@@ -86,23 +89,23 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     a: ({ href, children }) => (
       <a
         href={href}
-        className="text-theme-orange dark:text-theme-pink hover:text-theme-pink dark:hover:text-theme-blue underline transition-colors break-all"
+        className="text-theme-lime underline transition-colors break-all"
         target={href?.startsWith('http') ? '_blank' : undefined}
         rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
       >
         {children}
       </a>
     ),
-    Link: ({ href, children }) => (
-      <Link
-        href={href}
-        className="text-orange hover:text-pink underline transition-colors"
-        target={href?.startsWith('http') ? '_blank' : undefined}
-        rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
-      >
-        {children}
-      </Link>
-    ),
+    // Link: ({ href, children }) => (
+    //   <Link
+    //     href={href}
+    //     className="text-orange hover:text-pink underline transition-colors"
+    //     target={href?.startsWith('http') ? '_blank' : undefined}
+    //     rel={href?.startsWith('http') ? 'noopener noreferrer' : undefined}
+    //   >
+    //     {children}
+    //   </Link>
+    // ),
 
     // Custom image with Next.js Image component
     img: ({ src, alt }) => (
@@ -119,21 +122,21 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     // Custom table styling
     table: ({ children }) => (
-      <div className="overflow-x-auto my-6">
-        <table className="min-w-full border-collapse border border-gray-300">
+      <div className="my-6 overflow-x-auto">
+        <table className="table-auto min-w-full border-collapse border border-section-label">
           {children}
         </table>
       </div>
     ),
 
     th: ({ children }) => (
-      <th className="border border-gray-300 bg-gray-100 px-4 py-2 text-left font-semibold">
+      <th className="border border-section-label bg-[#0A2534] px-4 py-2 text-left font-mono uppercase text-terminal-highlight">
         {children}
       </th>
     ),
 
     td: ({ children }) => (
-      <td className="border border-gray-300 px-4 py-2">
+      <td className="border border-section-label px-4 py-2 text-body-text-color">
         {children}
       </td>
     ),

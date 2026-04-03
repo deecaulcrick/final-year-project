@@ -36,42 +36,30 @@ const singlePost = async (props: SinglePostProps) => {
     const postContent = getPostContent(slug);
 
     return (
-        <>
-            <div className="flex justify-center items-center overflow-hidden">
-                <div className="flex flex-col md:flex-row gap-10 md:gap-20 px-8 md:px-16 py-16">
-                    <div className="w-full md:w-[80%]">
-                        <div className="mb-4">
-                            <Link href='/' className="flex items-center gap-3">
-                                <MoveLeft strokeWidth={1} />
-                                <p className="font-mono text-sm">
-                                    BACK
-                                </p>
-                            </Link>
-                        </div>
-                        <p className="mb-4 font-mono text-xs"><i>Filed under </i><b>{postContent.data.tag}</b> <i>on</i> <b>{postContent.data.date}</b></p>
+        <div className=" max-w-full">
+            <div className="max-w-full mt-20 p-6 md:p-10 ">
+                <h1 className="h1 font-heading text-heading-text-color tracking-tighter text-9xl">{postContent.data.title}</h1>
+                <p className="mt-20 text-lg font-mono text-section-label">{postContent.data.subheading}</p>
 
-                        <h1 className="h1 font-heading font-normal tracking-tight">{postContent.data.title}</h1>
-                        <p className="text-sm font-mono ">{postContent.data.subheading}</p>
 
-                        <hr className="my-12" />
-                        <BlogPost content={postContent.content} />
+            </div>
+            <div className="max-w-full p-6 md:p-10 md:grid md:grid-cols-6 gap-10 mt-20">
+                <div className="md:col-span-2 flex flex-col w-full">
+                    <h3 className=" font-mono text-base uppercase tracking-tighter border-b-1 border-b-section-label text-section-label ">/ Table of contents</h3>
+                    <div className="mt-4">
+                        <TableOfContents content={postContent.content} className="" />
                     </div>
-                    <div className="w-full md:w-[20%] static flex items-end ">
-                        <TableOfContents content={postContent.content} className=" hidden md:block sticky bottom-16 right-0" />
+                </div>
+
+                <div className="md:col-span-4">
+                    <h3 className="font-mono text-base uppercase tracking-tighter border-b-1 border-b-section-label text-section-label">/ Content</h3>
+                    <div className="mt-4 lg:w-[80%]">
+                        <BlogPost content={postContent.content} />
                     </div>
                 </div>
             </div>
 
-
-            {/* <div className="post-info relative">
-                <div>
-                    <p className="post-date">{postContent.data.date}</p>
-                </div>
-
-
-            </div> */}
-
-        </>
+        </div>
 
     );
 };

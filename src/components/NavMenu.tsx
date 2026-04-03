@@ -12,7 +12,7 @@ import {
 
 const NavMenu = () => {
     return (
-        <NavigationMenu viewport={false} className='relative flex'>
+        <NavigationMenu viewport={false} className='relative flex text-terminal-highlight font-medium text-xl'>
             <NavigationMenuList>
 
                 <NavigationMenuItem>

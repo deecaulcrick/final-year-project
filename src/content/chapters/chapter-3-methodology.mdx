@@ -1,37 +1,249 @@
 ---
 title: "Chapter III: Methodology"
-subheading: "System Design, Architecture, and the Decisions Behind an AI-Assisted EMR for Nigerian Primary Care"
-excerpt: From a paper folder in Lekki to a cloud-native, multi-tenant platform — how every technical decision was made with one doctor, one clinic, and one very real problem in mind
+subheading: "Building the Machine — Architecture, Models, Pipelines, and the Decisions Behind Every One"
+excerpt: From a patient uploading a blurry photo of a prescription to receiving a cited, accurate answer in plain English. Here is how it actually works.
 date: March 27, 2026
 category: research
 tag: Research
 coverImage: ""
 ---
 
+
 ## 3.1 Introduction
 
-This chapter presents the research methodology and system design approach adopted in the development of the AI-Assisted EMR/EHR SaaS Platform for Nigerian Primary Care — a cloud-based, multi-tenant EMR/EHR system with embedded AI clinical intelligence designed for Nigerian boutique and primary care clinics. The chapter starts by stating the research design and outlining methods used to gather and validate system requirements. It then presents the selected software development methodology, followed by a detailed description of the system architecture, database design, AI integration strategy, and the technology stack selected to implement the proposed solution. This chapter ends with a discussion of the system's security and data protection design, and the testing approach adopted to validate system behaviour.
+This chapter describes the methodology adopted in the design, development, and evaluation of a Retrieval-Augmented Generation (RAG) based personal health record intelligence system for Nigerian patients. It outlines the research approach, the system architecture, the implementation choices made for each component, and the evaluation framework used to assess system performance.
 
----
+The methodology is grounded in a design science research approach, which prioritises the creation and evaluation of artefacts — in this case, a working software system — as a means of addressing a well-defined real-world problem. As established in Chapter 2, the core problem is that Nigerian patients accumulate fragmented, unstructured medical records across multiple facilities and have no effective means of storing, querying, or understanding them. The proposed system is designed as a direct response to this gap.
+
+The chapter is structured as follows: Section 3.2 outlines the research design. Sections 3.3 and 3.4 describe the system architecture and document processing pipeline. Sections 3.5 through 3.7 detail the Named Entity Recognition, embedding, and RAG generation components. Section 3.8 describes the evaluation methodology, and Section 3.9 provides a summary of all tools and technologies used.
+
 
 ## 3.2 Research Design
 
-This project follows a design science research (DSR) approach, which is generally recognised as a suitable framework for applied computing research concerned with the creation of novel artefacts — systems, models, methods, or constructs — aimed at solving real-world problems (Hevner et al., 2004). Design science research is unique compared to purely empirical research in that it is not only concerned with the creation of a useful artefact but also the critical examination of that artefact in relation to the problem it is designed to address. In the context of this project, the artefact is the proposed platform itself, and the problem is the documented gap in accessible, intelligent clinical record management infrastructure for Nigerian primary care clinics.
+This study adopts a design science research (DSR) methodology. DSR is well suited to applied computing research where the objective is to produce a useful artefact — such as a system, model, or method — and to evaluate it against the problem it was designed to solve (Hevner et al., 2004). Unlike purely empirical research, which seeks to observe and explain phenomena, DSR is explicitly interventionist: it produces something new and measures its effectiveness.
 
-The study was conducted across four iterative phases: problem identification and requirements gathering, system design, iterative development and testing, and evaluation against defined requirements. Consistent with the iterative nature of design science research, these phases are not strictly sequential — several cycles of refinement occurred as early implementation decisions revealed additional requirements or constraints not captured in the initial analysis.
+The research process followed three primary phases. The first phase involved problem identification and requirements analysis, grounding the system objectives in the literature reviewed in Chapter 2 and in the observable reality of fragmented health records in the Nigerian context. The second phase involved the design and implementation of the system, resulting in a working prototype comprising a Next.js frontend, a FastAPI backend, a BioBERT NER pipeline, a ChromaDB-based retrieval system, and a Claude API-powered generation layer. The third phase involved empirical evaluation of the system against defined performance metrics.
 
----
+All evaluation in this study was conducted using synthetic clinical documents constructed to reflect real Nigerian clinical practice — lab results, prescriptions, consultation notes, and discharge summaries. No real patient data was collected or processed. This approach eliminates data privacy concerns while preserving ecological validity, as the synthetic documents were designed to replicate the structure, terminology, and formatting challenges of actual Nigerian healthcare records.
 
-## 3.3 Requirements Gathering
+## 3.3 System Architecture
 
-### 3.3.1 Literature and Contextual Review
+The system is organised into four logical layers: the frontend layer, the API gateway layer, the service layer, and the data layer. This separation of concerns ensures that each component can be developed, tested, and scaled independently, and that the system remains maintainable as it grows.
 
-The initial requirements gathering phase involved a systematic review of the academic and industry literature on EMR systems, clinical decision support, healthcare SaaS platforms, and AI applications in healthcare — the results of which are presented in Chapter Two. This review was supplemented by an analysis of existing EMR and clinical intelligence platforms operating in comparable contexts, including Vibrant Practice and August Health, in order to identify both best practices and functional gaps that the proposed system could address. The analysis of these platforms informed the system's feature prioritisation, particularly the design of the intelligence dashboard and proactive flagging mechanism.
+*Figure 3.1: Full system architecture showing the four-layer structure of the proposed system*
 
-### 3.3.2 User Requirements Analysis
+### 3.3.1 Frontend layer
 
-Primary requirements were derived through structured observation and informal interviews with a practising general practitioner operating a boutique primary care clinic in Lagos, Nigeria. This clinic — serving as the primary test case for the system design — operates a predominantly paper-based record system and was used to develop realistic, grounded user stories that drove the system's functional specification. Key stakeholder personas identified through this process included the clinic administrator/doctor, the nurse responsible for vitals recording, and the receptionist responsible for patient registration and appointment management.
+The frontend layer is built with Next.js 14 using the App Router architecture. It provides the patient-facing interface through which users register, upload medical documents, view extracted entities, interact with the Q&A chat, and access their personal health dashboard. Next.js was selected because it supports server-side rendering (SSR) for fast initial page loads, integrates cleanly with Supabase authentication, and is well-suited to building responsive web applications that can later be adapted for mobile use.
 
-The requirements elicitation process yielded a set of functional and non-functional requirements that formed the basis of the system specification. Functional requirements were organised into five categories corresponding to the system's principal modules: patient management, consultation and clinical documentation, intelligence and analytics, AI-assisted decision support, and clinic administration. Non-functional requirements addressed system performance, data security and privacy compliance, multi-tenant data isolation, browser-based accessibility, and graceful degradation under poor network conditions.
+The document viewer renders uploaded files alongside colour-coded Named Entity Recognition highlights, with each entity type — drug, condition, symptom, lab value, date — displayed in a distinct colour. The Q&A interface presents answers with source citations, showing users the exact document excerpt that each answer was drawn from.
 
-<Callout type="disclaimer" heading="Disclaimer" text="This chapter is still a work in progress in progress..."/>
+### 3.3.2 API gateway layer
+
+The API gateway is implemented using FastAPI, a modern Python web framework that provides asynchronous request handling, automatic OpenAPI documentation, and native support for Python's machine learning ecosystem. The gateway handles user authentication via JSON Web Tokens (JWT) issued through Supabase Auth, routes requests to the appropriate service, and enforces per-user data isolation — ensuring that one patient's records are never accessible to another.
+
+Rate limiting and error handling are applied at the gateway level, returning structured error responses rather than raw exceptions. All routes require a valid JWT token, with the exception of the registration and login endpoints.
+
+### 3.3.3 Service layer
+
+The service layer contains the core logic of the system and is subdivided into four services: the ingestion service, the NER service, the embedding service, and the RAG generation service. These services are called either directly from the API gateway (for synchronous operations such as retrieval and generation) or via an asynchronous Celery task queue (for computationally expensive operations such as document processing and embedding).
+
+The use of an asynchronous task queue is a critical architectural decision. Document processing — which involves PDF extraction, chunking, NER inference, and embedding — can take between 30 seconds and several minutes depending on document size. Running this synchronously in an HTTP request would cause timeouts and poor user experience. Instead, the system immediately saves the document and queues a background task, returning a processing status to the frontend. The frontend polls the document status endpoint until it receives a 'ready' response.
+
+### 3.3.4 Data layer
+
+The data layer consists of three storage systems serving distinct purposes. PostgreSQL, hosted via Supabase, provides the primary relational database for structured data: user accounts, document metadata, text chunks, extracted entities, and Q&A session history. Supabase Storage provides S3-compatible object storage for raw uploaded files — PDFs and images — which are retained for display and re-processing. ChromaDB provides the vector store, persisting the 384-dimensional embeddings of all text chunks alongside their metadata and enabling fast semantic retrieval at query time.
+
+The database schema is designed around seven core tables: users, documents, chunks, embeddings, entities, qa_sessions, and qa_messages. A key design decision is that the entities table stores both a chunk_id and a document_id foreign key, allowing efficient queries for all entities within a document without requiring a join through the chunks table. The qa_messages table stores an array of source chunk IDs alongside each assistant response, enabling full citation traceability. Figure 3.3 shows the full entity-relationship diagram.
+
+*Figure 3.3: Entity-relationship diagram (ERD) of the system database schema*
+
+## 3.4 Document Processing Pipeline
+
+When a patient uploads a document, it passes through a five-stage processing pipeline before it becomes queryable. This pipeline is executed asynchronously by a Celery worker process and updates the document status in the database at each stage. Figure 3.2 illustrates the full sequence.
+
+*Figure 3.2: Asynchronous document processing pipeline — from upload to queryable knowledge base*
+
+### 3.4.1 File upload and storage
+
+The uploaded file is first validated for supported MIME types (application/pdf, image/jpeg, image/png). It is then written to Supabase Storage under a path scoped to the authenticated user's ID, ensuring file isolation. A document record is created in PostgreSQL with a status of 'processing', and the document ID is passed to the Celery task queue to begin background processing.
+
+### 3.4.2 Text extraction
+
+Text extraction is performed using PyMuPDF (imported as fitz), which supports both digitally-created PDFs and image-based documents. For image files and scanned PDFs, PyMuPDF's built-in OCR layer is invoked to convert pixel content to text. PyMuPDF was selected over alternatives such as pdfminer.six because of its superior handling of mixed-content documents and its significantly faster extraction speed on multi-page files.
+
+A known limitation of this stage is that handwritten clinical text — common in informal Nigerian clinical settings — may produce poor OCR output. When extraction confidence falls below a threshold, the document is flagged with a 'low confidence' status that is surfaced to the user in the interface, encouraging re-upload of a higher quality scan.
+
+### 3.4.3 Text chunking
+
+The extracted text is divided into overlapping chunks using LangChain's RecursiveCharacterTextSplitter. Chunks are set to a maximum of 500 tokens with a 50-token overlap between adjacent chunks. The recursive splitting strategy prioritises natural language boundaries — paragraph breaks, then sentence boundaries, then word boundaries — to preserve semantic coherence within each chunk.
+
+The 500-token chunk size was selected as a balance between retrieval granularity and context completeness. Smaller chunks improve retrieval precision but may omit surrounding clinical context needed for accurate answer generation. Larger chunks provide more context but reduce retrieval relevance. The 50-token overlap ensures that information at chunk boundaries is not lost when a relevant passage spans two chunks. Each chunk is stored in the database with its character offset within the original document, enabling precise highlighting in the document viewer.
+
+### 3.4.4 Named entity recognition
+
+Following chunking, each chunk is passed to the NER service. The full NER pipeline is described in Section 3.5.
+
+### 3.4.5 Embedding
+
+Following NER, each chunk is encoded into a 384-dimensional vector embedding and added to the user's ChromaDB collection. The full embedding pipeline is described in Section 3.6. Once all chunks have been processed, the document status is updated to 'ready' and the frontend is notified on its next polling request.
+
+## 3.5 Named Entity Recognition
+
+### 3.5.1 Model selection
+
+Named Entity Recognition is performed using BioBERT (dmis-lab/biobert-v1.1), a transformer-based model pre-trained on PubMed abstracts and PubMed Central full-text articles. As established in the literature review (Section 2.4.2), BioBERT significantly outperforms general-purpose BERT models on biomedical NER benchmarks, owing to its domain-specific pre-training vocabulary and contextual representations.
+
+The model is fine-tuned on the BC5CDR (BioCreative V Chemical-Disease Relation) corpus, which provides annotations for chemical and disease entities, and evaluated additionally against the i2b2 dataset for medication and problem entities. This combination provides coverage of the entity types most relevant to a personal health record context: drugs, diseases, symptoms, lab values, and clinical events.
+
+ClinicalBERT was considered as an alternative but was ultimately not selected for this application. While ClinicalBERT's pre-training on MIMIC-III clinical notes gives it advantages on informal documentation style, its training data is derived entirely from US hospital records and has been shown to exhibit reduced performance on clinical text from other healthcare systems. BioBERT's broader biomedical pre-training corpus was judged to be more appropriate given the Nigerian clinical context, where documentation practices differ substantially from those in the MIMIC-III dataset.
+
+### 3.5.2 Entity taxonomy
+
+The system recognises six primary entity types relevant to a personal health record: medical conditions and diagnoses, medications and drugs, symptoms and complaints, laboratory values and test results, dosage and frequency information, and clinical dates and temporal references. Each entity type is assigned a distinct colour in the document viewer, allowing patients to visually scan a document and immediately identify its clinical content.
+
+### 3.5.3 Inference pipeline
+
+At inference time, the NER model is loaded once at service startup to avoid the overhead of repeated model loading. Each chunk is tokenised and passed to the model, which produces token-level predictions using the BIO (Beginning, Inside, Outside) tagging scheme. The Hugging Face pipeline's 'simple' aggregation strategy is applied to merge adjacent B and I tags into complete entity spans.
+
+A confidence threshold of 0.75 is applied: entities predicted with a model confidence score below this value are discarded. This threshold was selected to balance precision against recall. In a medical context, surfacing a low-confidence entity that is clinically incorrect is more harmful than missing a genuine entity. Entities passing the threshold are stored in the database with their text, type, confidence score, and character offsets within the originating chunk, enabling precise highlighting in the document viewer.
+
+### 3.5.4 Limitations of the NER component
+
+The NER component has two notable limitations in the Nigerian context. First, BioBERT is trained on formal biomedical English and does not perform well on informal clinical text written in Nigerian Pidgin English, a widely spoken contact language that appears in clinical notes in some settings. Phrases such as 'patient dey complain of body pain' will not produce reliable entity extractions. Second, local drug brand names, traditional medicine references, and disease terminology specific to the Nigerian epidemiological context may not be represented in BioBERT's training data. Both limitations are acknowledged as directions for future work, specifically the collection of a Nigeria-specific annotated clinical corpus for model fine-tuning.
+
+
+## 3.6 Embedding and Vector Retrieval
+
+### 3.6.1 Embedding model
+
+Text chunks are encoded into dense vector representations using the all-MiniLM-L6-v2 model from the Sentence Transformers library. This model produces 384-dimensional embeddings and was selected for three reasons: its inference speed (suitable for real-time encoding of user queries), its strong performance on semantic similarity benchmarks relative to its size, and its open-source availability with no usage costs.
+
+A domain-specific biomedical embedding model such as PubMedBERT-based embeddings was considered. While domain-specific embeddings may offer marginal retrieval improvements on highly technical clinical text, the all-MiniLM-L6-v2 model was judged sufficient for the query types expected in a patient-facing PHR — natural language questions about personal health records — which are typically less technical than clinical research queries. Domain-specific embeddings remain a viable enhancement for future iterations of the system.
+
+### 3.6.2 ChromaDB vector store
+
+Embeddings are stored and searched using ChromaDB, an open-source vector database designed specifically for embedding-based retrieval in AI applications. ChromaDB was selected over lower-level vector search libraries for three practical reasons that are particularly relevant to this system's architecture.
+
+First, ChromaDB supports native metadata filtering. Each embedded chunk is stored alongside metadata fields — including user_id, document_id, chunk_index, and entity types present in the chunk. At retrieval time, these metadata fields can be used to scope a search to a specific document or user without requiring a post-retrieval join against PostgreSQL. This eliminates an entire class of retrieval errors where semantically similar chunks from a different document could surface in a patient's query results.
+
+Second, ChromaDB provides per-user collection isolation natively. A separate ChromaDB collection is created for each user at registration time. All of that user's chunk embeddings are stored within their collection, and all queries are scoped to that collection. This enforces a strong data isolation guarantee — one patient's records cannot appear in another patient's retrieval results — without any additional application-level filtering logic.
+
+Third, ChromaDB handles persistence and serialisation automatically. Unlike lower-level vector libraries that require manual management of index files and separate ID-mapping structures to link vector positions back to database records, ChromaDB stores embeddings, metadata, and document IDs in a single persistent store that survives application restarts without any additional code.
+
+### 3.6.3 Retrieval strategy
+
+At query time, the user's natural language question is encoded using the same all-MiniLM-L6-v2 model, producing a query vector of identical dimensionality to the stored chunk vectors. The user's ChromaDB collection is queried for the top-5 most semantically similar chunks, with an optional metadata filter applied to scope the search to a specific document when the user's query is directed at a single record. Five was selected as the retrieval depth based on the need to provide sufficient context for multi-part questions while keeping the generation prompt within a manageable token budget. The retrieved chunks are ordered by similarity score and passed directly to the generation service, with their chunk IDs used for citation in the response.
+
+
+## 3.7 Retrieval-Augmented Generation
+
+### 3.7.1 Prompt construction
+
+The generation prompt is constructed in two parts. The system prompt establishes the role and constraints of the language model: it identifies the system as a medical record assistant, instructs the model to answer questions based exclusively on the provided document excerpts, and directs it to acknowledge when the answer cannot be found in the retrieved context rather than generating a speculative response. This prompt-level constraint is the primary mechanism for hallucination mitigation.
+
+The user turn of the prompt concatenates the retrieved chunks as numbered excerpts, separated by dividers, followed by the patient's question. Each excerpt is attributed to a specific document and chunk to facilitate citation in the response. The model is instructed to include a disclaimer on all outputs reminding the user that the information is drawn from their personal records and does not constitute medical advice.
+
+### 3.7.2 Generation model
+
+Answer generation is performed using the Claude API (claude-sonnet-4-20250514), developed by Anthropic. This model was selected for its strong instruction-following capability — particularly its reliable adherence to the constraint of answering only from provided context — and its consistently safe handling of medical content. The model returns a JSON-structured response containing the answer text and an array of source chunk identifiers, which the frontend uses to render inline citations.
+
+*Figure 3.4: RAG query pipeline — from natural language question to cited answer*
+
+### 3.7.3 Hallucination mitigation
+
+Hallucination — the generation of plausible but factually incorrect content — is a well-documented risk in standalone language models and is especially dangerous in medical applications. The system employs three complementary mitigation strategies. First, the system prompt explicitly instructs the model not to answer questions whose answers are absent from the retrieved context. Second, every answer is accompanied by citations to the specific document excerpts it was derived from, enabling the user to verify the response against the source. Third, a mandatory disclaimer is appended to all outputs clarifying that the response reflects the content of the user's uploaded records and should not substitute for professional clinical advice.
+
+It is acknowledged that these mitigations reduce but do not eliminate hallucination risk. If the retrieved chunks themselves contain errors — for example, a transcription error in an OCR-processed document — the generated answer may propagate that error. This is identified as a limitation and an area for ongoing system improvement.
+
+
+## 3.8 Evaluation Methodology
+
+The evaluation of the system is structured around four complementary approaches: NER performance evaluation, retrieval quality evaluation, RAG versus baseline comparison, and qualitative usability evaluation. Together, these provide a comprehensive assessment of both the technical performance of the system and its practical usefulness to patients.
+
+### 3.8.1 NER evaluation
+
+The NER component is evaluated against a manually annotated gold-standard dataset comprising 50 to 100 sentences sampled from synthetic Nigerian clinical documents. Annotation follows the entity taxonomy defined in Section 3.5.2, with each token labelled using the BIO scheme. The primary evaluation metrics are precision, recall, and F1 score, computed per entity type and as a macro-average across all types.
+
+Precision measures the proportion of entities predicted by the model that are genuinely correct. Recall measures the proportion of true entities in the text that the model successfully identifies. The F1 score is the harmonic mean of precision and recall and serves as the primary headline metric, as it captures the trade-off between the two. A separate analysis is conducted for entities that appear in Nigeria-specific clinical language — local drug brand names, Pidgin-influenced symptom descriptions — to characterise the model's performance gap on this sub-domain.
+
+### 3.8.2 Retrieval evaluation
+
+Retrieval quality is evaluated using a curated set of 20 question-document pairs constructed from synthetic clinical documents. For each question, a ground-truth set of relevant chunks is manually identified. The retrieval system is then evaluated on Precision@K (the proportion of retrieved chunks that are relevant) and Recall@K (the proportion of relevant chunks that are successfully retrieved), where K is set to 5 (matching the system's retrieval depth). These metrics directly correspond to those used in the RAG literature reviewed in Chapter 2 (Lewis et al., 2020), enabling comparison with prior work.
+
+### 3.8.3 RAG versus naive baseline
+
+To demonstrate the value added by retrieval augmentation, the RAG system is compared against a naive baseline in which the same question is submitted to the Claude API without any retrieved context. Both systems are evaluated on the same 20-question set. Responses are assessed on three dimensions: factual accuracy (whether the answer correctly reflects the content of the source documents), relevance (whether the answer addresses the question asked), and hallucination rate (whether the response contains information not present in the source documents). Assessment is performed by manual review of each response against the corresponding source document.
+
+### 3.8.4 Usability evaluation
+
+A qualitative usability evaluation is conducted with three to five participants recruited from within the researcher's network. Participants are given a set of synthetic patient documents and asked to complete a series of tasks: uploading a document, identifying a medication from the entity highlights, asking a question about a test result, and summarising their medical history using the dashboard. Each session is observed and key friction points are noted. Participants complete a short post-task questionnaire based on the System Usability Scale (SUS), and qualitative feedback is collected through a brief semi-structured interview.
+
+The usability evaluation is exploratory given the small sample size and is not intended to be statistically representative. Its purpose is to identify usability issues, validate the clarity of the NER highlighting and citation interface, and collect qualitative evidence of the system's value to non-technical patients.
+
+
+## 3.9 Similar Approaches
+
+The following table summarises key prior works directly related to the technical approaches employed in this study. It contextualises the contribution of this project by identifying the objectives, methods, and limitations of each work, and highlights the gap that this project addresses.
+
+| Author / year | Title / paper | Objectives | Approaches | Limitations |
+|---|---|---|---|---|
+| Lewis et al. (2020) | RAG for knowledge-intensive NLP tasks | Reduce LLM hallucination by grounding generation in retrieved documents | Dense passage retrieval (DPR) + BART generator; end-to-end trainable pipeline evaluated on open-domain QA | Evaluated on general-domain datasets only; not tested on clinical text; requires large training corpora |
+| Lee et al. (2020) | BioBERT: pre-trained biomedical language model | Improve NLP performance on biomedical NER, RE, and QA tasks | Fine-tuned BERT on PubMed abstracts and PMC full texts; evaluated on BC5CDR and i2b2 datasets | Trained on formal biomedical English; limited performance on informal Nigerian clinical notes and non-English text |
+| Alsentzer et al. (2019) | Publicly available clinical BERT embeddings (ClinicalBERT) | Adapt BERT to informal clinical documentation style using real EHR data | Pre-trained on MIMIC-III de-identified clinical notes; evaluated on NER and NLI tasks | Trained exclusively on US hospital data; not transferable to Nigerian clinical documentation without fine-tuning |
+| Soni & Roberts (2020) | Evaluation of dataset selection for clinical NLP pre-training | Determine optimal training data for clinical NLP across downstream tasks | Compared BERT, BioBERT, ClinicalBERT on NER and RE using i2b2 datasets | All datasets sourced from US clinical systems; no evaluation on developing-country document types |
+| Yunusova et al. (2022) | Patient health record QA using RAG | Enable natural language querying of patient EHR data | Combined dense retrieval over structured EHR fields with GPT-3 generation; evaluated on annotated QA pairs | Relies on structured EHR input; not designed for unstructured uploaded documents; high API cost |
+| Xu et al. (2023) | MedGPT: medical concept-driven knowledge graph QA | Augment LLM medical QA with structured knowledge graphs | Entity linking to UMLS knowledge graph; retrieved triples as context for GPT-4 generation | Requires UMLS/SNOMED alignment which has limited coverage of Nigerian drug formulary and disease terminology |
+| Abdullahi et al. (2022) | Towards digital health in Nigeria: challenges and opportunities | Assess the state of digital health infrastructure in Nigeria | Systematic review of Nigerian eHealth initiatives; qualitative analysis of barriers | Review paper only — no technical solution proposed; does not address AI-based extraction approaches |
+| Peng et al. (2019) | Transfer learning in biomedical NLP: evaluation of BERT and ELMo | Benchmark transformer models across biomedical NLP tasks | Fine-tuned BERT and ELMo on NER, RE, similarity, and QA using PubMed-trained weights | All benchmarks use Western clinical corpora; no analysis of model degradation on non-standard clinical text |
+
+
+## 3.10 Tools and Technologies
+
+The following table provides a complete summary of the tools and technologies used in the implementation of the proposed system, along with the justification for each selection.
+
+| Component | Technology | Justification |
+|---|---|---|
+| Document upload & UI | Next.js 14 (React) | Industry-standard React framework with SSR support; familiar to the developer |
+| API layer | FastAPI (Python) | High-performance async Python API framework; native support for ML model serving |
+| PDF text extraction | PyMuPDF (fitz) | Robust handling of scanned and digital PDFs; faster than pdfminer |
+| Text chunking | LangChain RecursiveCharacterTextSplitter | Sentence-aware chunking with configurable overlap; preserves semantic coherence |
+| NER model | BioBERT (dmis-lab/biobert-v1.1) | Pre-trained on biomedical corpora; state-of-the-art on BC5CDR NER benchmark |
+| Embedding model | all-MiniLM-L6-v2 (Sentence Transformers) | Fast 384-dim embeddings; good semantic similarity performance for retrieval tasks |
+| Vector database | ChromaDB | Purpose-built vector database with native metadata filtering, per-user collections, and automatic persistence |
+| Answer generation | Claude API (claude-sonnet) | Strong instruction-following; reliable refusal to fabricate when context is absent |
+| Primary database | PostgreSQL via Supabase | Structured storage for users, documents, chunks, and entities; free-tier hosting |
+| File storage | Supabase Storage (S3-compatible) | Secure raw document storage; integrates natively with the Supabase auth layer |
+| Async task queue | Celery + Redis | Enables background document processing without blocking HTTP responses |
+| Authentication | JWT (via Supabase Auth) | Stateless token-based auth; enforces per-user data isolation at the API level |
+
+## 3.11 Summary
+
+This chapter has presented a comprehensive account of the methodology used to design, develop, and evaluate the proposed system. A design science research approach was adopted, resulting in a working software artefact evaluated against defined performance metrics.
+
+The system architecture integrates four layers — frontend, API gateway, service, and data — supported by an asynchronous document processing pipeline that transforms uploaded clinical documents into a queryable knowledge base. The NER component uses BioBERT to extract medically relevant entities from unstructured text. The embedding and retrieval component uses Sentence-BERT and ChromaDB to enable semantic search over document chunks with per-user collection isolation and metadata-filtered retrieval. The generation component uses the Claude API within a RAG framework to produce grounded, cited answers to patient queries.
+
+The evaluation methodology addresses the system's performance across four dimensions: NER accuracy, retrieval quality, RAG versus naive baseline comparison, and usability. The Nigerian context is explicitly incorporated into both the system design and the evaluation, acknowledging the limitations of current biomedical NLP models on informal clinical text and local medical terminology.
+
+The following chapter presents the results of the implementation and evaluation, discussing findings in relation to the research objectives established in Chapter 1 and the literature reviewed in Chapter 2.
+
+
+## References
+
+Hevner, A. R., March, S. T., Park, J., & Ram, S. (2004). Design science in information systems research. *MIS Quarterly*, 28(1), 75–105.
+
+Lee, J., Yoon, W., Kim, S., Kim, D., Kim, S., So, C. H., & Kang, J. (2020). BioBERT: A pre-trained biomedical language representation model for biomedical text mining. *Bioinformatics*, 36(4), 1234–1240.
+
+Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttler, H., Lewis, M., Yih, W., Rocktäschel, T., Riedel, S., & Kiela, D. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. *Advances in Neural Information Processing Systems*, 33, 9459–9474.
+
+Alsentzer, E., Murphy, J. R., Boag, W., Weng, W. H., Jin, D., Naumann, T., & McDermott, M. (2019). Publicly available clinical BERT embeddings. *Proceedings of the 2nd Clinical Natural Language Processing Workshop*, 72–78.
+
+Soni, S., & Roberts, K. (2020). Evaluation of dataset selection for pre-training and fine-tuning of clinical NLP models. *Proceedings of the 12th Language Resources and Evaluation Conference*, 5398–5404.
+
+Abdullahi, M., Saheed, A., & Usman, A. (2022). Towards digital health in Nigeria: Challenges and opportunities. *Journal of Health Informatics in Developing Countries*, 16(1), 1–18.
+
+Peng, Y., Yan, S., & Lu, Z. (2019). Transfer learning in biomedical natural language processing: An evaluation of BERT and ELMo on ten benchmarking datasets. *Proceedings of the BioNLP 2019 Workshop*, 58–65.
+
+Yunusova, Z., Li, B., & Liang, P. P. (2022). Patient health record question answering using retrieval-augmented generation. *Proceedings of the AAAI Workshop on AI for Health*, 1–8.
+
+Xu, Y., Lee, H. Y., Chen, X., Zhang, Z., & Li, M. (2023). MedGPT: Medical concept-driven knowledge graph question answering with large language models. *arXiv preprint arXiv:2308.05862*.

@@ -30,19 +30,19 @@ const singlePost = async (props: SinglePostProps) => {
 
     return (
         <>
+            <div className="mt-20 p-6 md:p-10 text-center">
+                <p className="font-mono uppercase text-sm text-center mb-4 text-terminal-highlight"><i>Filed under </i><b>{postContent.data.category}</b> <i>on</i> <b>{postContent.data.date}</b></p>
+                <h1 className="h1 text-center font-heading text-heading-text-color tracking-tighter text-9xl">{postContent.data.title}</h1>
+                <p className="text-center mt-20 text-sm font-mono text-heading-text-color">{postContent.data.subheading}</p>
 
-            <div className="flex flex-col items-center px-8 md:px-10 lg:px-16">
-                <div className="w-full md:w-[80%]">
-                    <div className="mb-20 py-16 px-8 md:px-10 lg:px-16">
-                        <p className="font-mono uppercase text-sm text-center mb-4"><i>Filed under </i><b>{postContent.data.category}</b> <i>on</i> <b>{postContent.data.date}</b></p>
-                        <h1 className="h1 text-center tracking-tight">{postContent.data.title}</h1>
-                        <p className=" font-body text-lg text-center">{postContent.data.description}</p>
-
-
-                    </div>
+            </div>
+            <div className="p-6 md:p-10 mt-4">
+                <h3 className="font-mono text-base uppercase tracking-tighter border-b-1 border-b-section-label text-section-label">/ Note</h3>
+                <div className="mt-4 lg:w-[80%]">
                     <BlogPost content={postContent.content} />
                 </div>
             </div>
+
         </>
     );
 };
